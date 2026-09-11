@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import api from "../services/api";
+import { authApi, authStorage, getErrorMessage } from "../services/api";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -20,11 +20,11 @@ const Register = () => {
     setIsSubmitting(true);
 
     try {
-      const response = await api.post("/auth/register", form);
-      localStorage.setItem("token", response.data.token);
+      const response = await authApi.register(form);
+      authStorage.setSession(response.data);
       navigate(`/dashboard/${response.data.user?.role || "jobseeker"}`);
     } catch (requestError) {
-      setError(requestError.response?.data?.message || "Registration failed");
+      setError(getErrorMessage(requestError, "Registration failed"));
     } finally {
       setIsSubmitting(false);
     }

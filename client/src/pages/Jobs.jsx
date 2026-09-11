@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import JobCard from "../components/Jobcard";
-import api from "../services/api";
+import { getErrorMessage, jobsApi } from "../services/api";
 
 const Jobs = () => {
   const [search, setSearch] = useState("");
@@ -14,13 +14,11 @@ const Jobs = () => {
     const loadJobs = async () => {
       setIsLoading(true);
       try {
-        const response = await api.get("/jobs", {
-          params: search ? { search } : undefined,
-        });
+        const response = await jobsApi.list(search ? { search } : undefined);
         setJobs(response.data);
         setError("");
       } catch (requestError) {
-        setError(requestError.response?.data?.message || "Unable to load jobs");
+        setError(getErrorMessage(requestError, "Unable to load jobs"));
       } finally {
         setIsLoading(false);
       }

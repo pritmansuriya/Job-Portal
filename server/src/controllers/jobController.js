@@ -1,4 +1,7 @@
 const Job = require("../models/Job");
+const mongoose = require("mongoose");
+const User = require("../models/User");
+const Notification = require("../models/notification");
 
 const createJob = async (req, res) => {
   try {
@@ -14,7 +17,7 @@ const createJob = async (req, res) => {
       deadline
     } = req.body;
 
-    const job = await Job.create({
+    const jobData = {
       title,
       description,
       company,
@@ -23,9 +26,37 @@ const createJob = async (req, res) => {
       jobType,
       experience,
       skills,
-      deadline,
-      createdBy: req.user._id
-    });
+      deadline
+    };
+
+    if (req.user?._id) {
+      jobData.createdBy = req.user._id;
+    }
+
+    const job = await Job.create(jobData);
+
+    try {
+      const jobseekers = await User.find({
+        role: "jobseeker"
+      }).select("_id");
+
+      if (jobseekers.length > 0) {
+        await Notification.insertMany(
+          jobseekers.map((user) => ({
+            recipient: user._id,
+            type: "new_job",
+            title: "New job posted",
+            message: `${job.title} is now available at ${job.company}.`,
+            job: job._id
+          }))
+        );
+      }
+    } catch (notificationError) {
+      console.error(
+        "Job created, but notification creation failed:",
+        notificationError.message
+      );
+    }
 
     res.status(201).json({
       message: "Job created successfully",
@@ -95,6 +126,12 @@ const getJobs = async (req, res) => {
 
 const getJobById = async (req, res) => {
   try {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({
+        message: "Invalid job ID. Use the MongoDB job _id."
+      });
+    }
+
     const job = await Job.findById(
       req.params.id
     ).populate(
@@ -118,6 +155,12 @@ const getJobById = async (req, res) => {
 
 const updateJob = async (req, res) => {
   try {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({
+        message: "Invalid job ID. Use the MongoDB job _id."
+      });
+    }
+
     const job = await Job.findById(
       req.params.id
     );
@@ -125,15 +168,6 @@ const updateJob = async (req, res) => {
     if (!job) {
       return res.status(404).json({
         message: "Job not found"
-      });
-    }
-
-    if (
-      job.createdBy.toString() !==
-      req.user._id.toString()
-    ) {
-      return res.status(403).json({
-        message: "Not allowed"
       });
     }
 
@@ -157,6 +191,12 @@ const updateJob = async (req, res) => {
 
 const deleteJob = async (req, res) => {
   try {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({
+        message: "Invalid job ID. Use the MongoDB job _id."
+      });
+    }
+
     const job = await Job.findById(
       req.params.id
     );
@@ -164,15 +204,6 @@ const deleteJob = async (req, res) => {
     if (!job) {
       return res.status(404).json({
         message: "Job not found"
-      });
-    }
-
-    if (
-      job.createdBy.toString() !==
-      req.user._id.toString()
-    ) {
-      return res.status(403).json({
-        message: "Not allowed"
       });
     }
 

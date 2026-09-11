@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { FiBriefcase, FiUser } from "react-icons/fi";
+import NotificationBell from "./NotificationBell";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -35,6 +36,8 @@ const Navbar = () => {
           >
             Register
           </Link>
+
+          <NotificationBell />
         </div>
 
         <FiUser className="md:hidden text-xl" />

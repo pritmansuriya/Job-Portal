@@ -10,6 +10,7 @@ import Register from "./pages/Register";
 import JobSeekerDashboard from "./pages/jobseeker/Dashboard";
 import Profile from "./pages/jobseeker/Profile";
 import Applications from "./pages/jobseeker/Applications";
+import Notifications from "./pages/jobseeker/Notification";
 import SavedJobs from "./pages/jobseeker/SavedJobs";
 
 // Employer
@@ -27,9 +28,7 @@ import AdminApplications from "./pages/admin/Applications";
 function App() {
   return (
     <BrowserRouter>
-
       <Routes>
-
         {/* Public */}
         <Route path="/" element={<Home />} />
         <Route path="/jobs" element={<Jobs />} />
@@ -38,15 +37,9 @@ function App() {
         <Route path="/register" element={<Register />} />
 
         {/* Job Seeker */}
-        <Route
-          path="/dashboard/jobseeker"
-          element={<JobSeekerDashboard />}
-        />
+        <Route path="/dashboard/jobseeker" element={<JobSeekerDashboard />} />
 
-        <Route
-          path="/dashboard/jobseeker/profile"
-          element={<Profile />}
-        />
+        <Route path="/dashboard/jobseeker/profile" element={<Profile />} />
 
         <Route
           path="/dashboard/jobseeker/applications"
@@ -54,25 +47,18 @@ function App() {
         />
 
         <Route
-          path="/dashboard/jobseeker/saved"
-          element={<SavedJobs />}
+          path="/dashboard/jobseeker/notifications"
+          element={<Notifications />}
         />
+
+        <Route path="/dashboard/jobseeker/saved" element={<SavedJobs />} />
 
         {/* Employer */}
-        <Route
-          path="/dashboard/employer"
-          element={<EmployerDashboard />}
-        />
+        <Route path="/dashboard/employer" element={<EmployerDashboard />} />
 
-        <Route
-          path="/dashboard/employer/post-job"
-          element={<PostJob />}
-        />
+        <Route path="/dashboard/employer/post-job" element={<PostJob />} />
 
-        <Route
-          path="/dashboard/employer/jobs"
-          element={<MyJobs />}
-        />
+        <Route path="/dashboard/employer/jobs" element={<MyJobs />} />
 
         <Route
           path="/dashboard/employer/applications"
@@ -80,28 +66,17 @@ function App() {
         />
 
         {/* Admin */}
-        <Route
-          path="/dashboard/admin"
-          element={<AdminDashboard />}
-        />
+        <Route path="/dashboard/admin" element={<AdminDashboard />} />
 
-        <Route
-          path="/dashboard/admin/users"
-          element={<Users />}
-        />
+        <Route path="/dashboard/admin/users" element={<Users />} />
 
-        <Route
-          path="/dashboard/admin/jobs"
-          element={<AdminJobs />}
-        />
+        <Route path="/dashboard/admin/jobs" element={<AdminJobs />} />
 
         <Route
           path="/dashboard/admin/applications"
           element={<AdminApplications />}
         />
-
       </Routes>
-
     </BrowserRouter>
   );
 }

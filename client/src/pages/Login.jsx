@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import api from "../services/api";
+import { authApi, authStorage, getErrorMessage } from "../services/api";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -14,7 +14,7 @@ const Login = () => {
   e.preventDefault();
 
   try {
-    const response = await api.post("/auth/login", {
+    const response = await authApi.login({
       email: form.email,
       password: form.password,
     });
@@ -22,18 +22,18 @@ const Login = () => {
     console.log("Login response:", response.data);
 
     // Save JWT token
-    localStorage.setItem("token", response.data.token);
+    authStorage.setSession(response.data);
 
     navigate(`/dashboard/${response.data.user?.role || "jobseeker"}`);
 
   } catch (error) {
     console.error(
       "Login error:",
-      error.response?.data?.message || error.message
+      getErrorMessage(error, "Login failed")
     );
 
     alert(
-      error.response?.data?.message || "Login failed"
+      getErrorMessage(error, "Login failed")
     );
   }
 };

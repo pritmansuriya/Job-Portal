@@ -1,7 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
-import api from "../services/api";
+import { getErrorMessage, jobsApi } from "../services/api";
 
 const JobDetails = () => {
   const { id } = useParams();
@@ -9,10 +9,15 @@ const JobDetails = () => {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    api.get(`/jobs/${id}`)
+    if (!/^[a-f\d]{24}$/i.test(id)) {
+      setError("Invalid job ID. Open a job from the jobs list.");
+      return;
+    }
+
+    jobsApi.getById(id)
       .then((response) => setJob(response.data))
       .catch((requestError) => {
-        setError(requestError.response?.data?.message || "Unable to load job");
+        setError(getErrorMessage(requestError, "Unable to load job"));
       });
   }, [id]);
 

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import api from "../../services/api";
+import { getErrorMessage, jobsApi } from "../../services/api";
 
 const PostJob = () => {
   const navigate = useNavigate();
@@ -21,10 +21,10 @@ const PostJob = () => {
     setIsSubmitting(true);
 
     try {
-      await api.post("/jobs", form);
+      await jobsApi.create(form);
       navigate("/dashboard/employer/jobs");
     } catch (requestError) {
-      setError(requestError.response?.data?.message || "Unable to publish job");
+      setError(getErrorMessage(requestError, "Unable to publish job"));
     } finally {
       setIsSubmitting(false);
     }
