@@ -1,8 +1,20 @@
 import { Link, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
+import api from "../services/api";
 
 const JobDetails = () => {
   const { id } = useParams();
+  const [job, setJob] = useState(null);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    api.get(`/jobs/${id}`)
+      .then((response) => setJob(response.data))
+      .catch((requestError) => {
+        setError(requestError.response?.data?.message || "Unable to load job");
+      });
+  }, [id]);
 
   return (
     <>
@@ -12,15 +24,12 @@ const JobDetails = () => {
 
         <div className="max-w-5xl mx-auto px-6">
 
-          <div className="bg-white rounded-xl border p-8">
+          {error && <p className="text-red-600">{error}</p>}
+          {!job && !error && <p className="text-gray-500">Loading job...</p>}
+          {job && <div className="bg-white rounded-xl border p-8">
 
-            <p className="text-blue-600">
-              Tech Solutions
-            </p>
-
-            <h1 className="text-3xl font-bold mt-2">
-              Frontend Developer
-            </h1>
+              <p className="text-blue-600">{job.company}</p>
+              <h1 className="text-3xl font-bold mt-2">{job.title}</h1>
 
             <p className="text-gray-500 mt-3">
               Job ID: {id}
@@ -30,17 +39,17 @@ const JobDetails = () => {
 
               <div className="bg-gray-50 p-5 rounded-lg">
                 <p className="text-gray-500">Location</p>
-                <p className="font-semibold">Ahmedabad</p>
+                <p className="font-semibold">{job.location}</p>
               </div>
 
               <div className="bg-gray-50 p-5 rounded-lg">
                 <p className="text-gray-500">Salary</p>
-                <p className="font-semibold">₹6L - ₹10L</p>
+                <p className="font-semibold">{job.salary}</p>
               </div>
 
               <div className="bg-gray-50 p-5 rounded-lg">
                 <p className="text-gray-500">Job Type</p>
-                <p className="font-semibold">Full Time</p>
+                <p className="font-semibold">{job.jobType}</p>
               </div>
 
             </div>
@@ -50,11 +59,7 @@ const JobDetails = () => {
                 Job Description
               </h2>
 
-              <p className="text-gray-600 mt-4 leading-7">
-                We are looking for a talented frontend developer to
-                join our development team. You will work with React,
-                JavaScript and modern frontend technologies.
-              </p>
+              <p className="text-gray-600 mt-4 leading-7">{job.description}</p>
             </div>
 
             <div className="mt-8">
@@ -63,7 +68,7 @@ const JobDetails = () => {
               </h2>
 
               <div className="flex flex-wrap gap-3 mt-4">
-                {["React", "JavaScript", "HTML", "CSS", "Git"].map(
+                {(job.skills || []).map(
                   (skill) => (
                     <span
                       key={skill}
@@ -83,7 +88,7 @@ const JobDetails = () => {
               Apply Now
             </Link>
 
-          </div>
+          </div>}
 
         </div>
 

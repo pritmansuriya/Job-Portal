@@ -1,22 +1,33 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import api from "../../services/api";
 
 const PostJob = () => {
+  const navigate = useNavigate();
   const [form, setForm] = useState({
     title: "",
     company: "",
     location: "",
     salary: "",
-    type: "Full Time",
+    jobType: "Full Time",
     description: "",
   });
+  const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+    setIsSubmitting(true);
 
-    console.log(form);
-
-    // Later:
-    // POST /api/jobs
+    try {
+      await api.post("/jobs", form);
+      navigate("/dashboard/employer/jobs");
+    } catch (requestError) {
+      setError(requestError.response?.data?.message || "Unable to publish job");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -30,6 +41,8 @@ const PostJob = () => {
         onSubmit={handleSubmit}
         className="bg-white border rounded-xl p-8 mt-8 max-w-4xl space-y-5"
       >
+
+        {error && <p className="text-red-600">{error}</p>}
 
         <input
           placeholder="Job Title"
@@ -73,9 +86,9 @@ const PostJob = () => {
 
         <select
           className="w-full border rounded-lg px-4 py-3"
-          value={form.type}
+          value={form.jobType}
           onChange={(e) =>
-            setForm({ ...form, type: e.target.value })
+            setForm({ ...form, jobType: e.target.value })
           }
         >
           <option>Full Time</option>
@@ -96,9 +109,10 @@ const PostJob = () => {
 
         <button
           type="submit"
+          disabled={isSubmitting}
           className="bg-blue-600 text-white px-7 py-3 rounded-lg"
         >
-          Publish Job
+          {isSubmitting ? "Publishing..." : "Publish Job"}
         </button>
 
       </form>

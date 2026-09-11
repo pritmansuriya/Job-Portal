@@ -1,41 +1,33 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import JobCard from "../components/Jobcard";
-
-const jobsData = [
-  {
-    id: 1,
-    title: "Frontend Developer",
-    company: "Tech Solutions",
-    location: "Ahmedabad",
-    salary: "₹6L - ₹10L",
-    type: "Full Time",
-  },
-  {
-    id: 2,
-    title: "MERN Stack Developer",
-    company: "Innovate Labs",
-    location: "Remote",
-    salary: "₹8L - ₹14L",
-    type: "Full Time",
-  },
-  {
-    id: 3,
-    title: "UI/UX Designer",
-    company: "Creative Studio",
-    location: "Mumbai",
-    salary: "₹5L - ₹9L",
-    type: "Full Time",
-  },
-];
+import api from "../services/api";
 
 const Jobs = () => {
   const [search, setSearch] = useState("");
+  const [jobs, setJobs] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  const filteredJobs = jobsData.filter((job) =>
-    job.title.toLowerCase().includes(search.toLowerCase())
-  );
+  useEffect(() => {
+    const loadJobs = async () => {
+      setIsLoading(true);
+      try {
+        const response = await api.get("/jobs", {
+          params: search ? { search } : undefined,
+        });
+        setJobs(response.data);
+        setError("");
+      } catch (requestError) {
+        setError(requestError.response?.data?.message || "Unable to load jobs");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadJobs();
+  }, [search]);
 
   return (
     <>
@@ -59,9 +51,12 @@ const Jobs = () => {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
 
-            {filteredJobs.map((job) => (
-              <JobCard key={job.id} job={job} />
-            ))}
+            {isLoading && <p className="text-gray-500">Loading jobs...</p>}
+            {error && <p className="text-red-600">{error}</p>}
+            {!isLoading && !error && jobs.length === 0 && (
+              <p className="text-gray-500">No jobs found.</p>
+            )}
+            {jobs.map((job) => <JobCard key={job._id} job={job} />)}
 
           </div>
 

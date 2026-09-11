@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import api from "../services/api";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -10,16 +11,23 @@ const Register = () => {
     password: "",
     role: "jobseeker",
   });
+  const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+    setIsSubmitting(true);
 
-    console.log(form);
-
-    // Later:
-    // POST /api/auth/register
-
-    navigate("/login");
+    try {
+      const response = await api.post("/auth/register", form);
+      localStorage.setItem("token", response.data.token);
+      navigate(`/dashboard/${response.data.user?.role || "jobseeker"}`);
+    } catch (requestError) {
+      setError(requestError.response?.data?.message || "Registration failed");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -35,6 +43,8 @@ const Register = () => {
           onSubmit={handleSubmit}
           className="mt-8 space-y-5"
         >
+
+          {error && <p className="text-red-600 text-sm">{error}</p>}
 
           <input
             type="text"
@@ -79,9 +89,10 @@ const Register = () => {
 
           <button
             type="submit"
+            disabled={isSubmitting}
             className="w-full bg-blue-600 text-white py-3 rounded-lg"
           >
-            Register
+            {isSubmitting ? "Creating account..." : "Register"}
           </button>
 
         </form>

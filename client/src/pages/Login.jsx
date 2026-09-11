@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import api from "../services/api";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -9,15 +10,33 @@ const Login = () => {
     password: "",
   });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    console.log(form);
+  try {
+    const response = await api.post("/auth/login", {
+      email: form.email,
+      password: form.password,
+    });
 
-    // Later:
-    // API login → JWT → dashboard
-    navigate("/dashboard/jobseeker");
-  };
+    console.log("Login response:", response.data);
+
+    // Save JWT token
+    localStorage.setItem("token", response.data.token);
+
+    navigate(`/dashboard/${response.data.user?.role || "jobseeker"}`);
+
+  } catch (error) {
+    console.error(
+      "Login error:",
+      error.response?.data?.message || error.message
+    );
+
+    alert(
+      error.response?.data?.message || "Login failed"
+    );
+  }
+};
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-6">

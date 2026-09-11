@@ -29,17 +29,17 @@ const JobCard = ({ job }) => {
 
         <p className="flex items-center gap-2">
           <FiDollarSign />
-          {job.salary}
+          {job.salary || "Salary not specified"}
         </p>
 
         <p className="flex items-center gap-2">
           <FiBriefcase />
-          {job.type}
+          {job.jobType || job.type}
         </p>
       </div>
 
       <Link
-        to={`/jobs/${job.id}`}
+        to={`/jobs/${job._id || job.id}`}
         className="inline-block mt-5 bg-blue-600 text-white px-5 py-2 rounded-lg"
       >
         View Details
