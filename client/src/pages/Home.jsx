@@ -16,12 +16,7 @@ const Home = () => {
           </h1>
 
           <p className="mt-6 text-gray-600 text-lg max-w-2xl mx-auto">
-<<<<<<< HEAD
-            Discover thousands of job opportunities from top companies
-            and take the next step in your career.
-=======
            Explore thousands of career opportunities from leading companies and move closer to your dream job.
->>>>>>> feature/dashboards
           </p>
 
           <div className="bg-white shadow-lg rounded-xl p-4 mt-10 max-w-4xl mx-auto flex flex-col md:flex-row gap-3">
