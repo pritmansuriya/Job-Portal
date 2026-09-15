@@ -3,6 +3,8 @@ import { FiArrowUpRight, FiBriefcase, FiUser } from "react-icons/fi";
 import NotificationBell from "./NotificationBell";
 
 const Navbar = () => {
+  const isLoggedIn = Boolean(localStorage.getItem("token"));
+
   return (
     <nav className="sticky top-0 z-50 border-b border-slate-200/80 bg-[#f5f7f4]/85 backdrop-blur-xl">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 lg:px-8">
@@ -45,17 +47,21 @@ const Navbar = () => {
             <FiArrowUpRight />
           </Link>
 
-          {/* Notifications */}
-          <NotificationBell />
+          {isLoggedIn && (
+            <>
+              {/* Notifications */}
+              <NotificationBell />
 
-           {/* Profile */}
-          <Link
-            to="/dashboard/jobseeker/profile"
-            className="flex items-center gap-2 hover:text-blue-600"
-          >
-            <FiUser />
-            Profile
-          </Link>
+              {/* Profile */}
+              <Link
+                to="/dashboard/jobseeker/profile"
+                className="flex items-center gap-2 hover:text-blue-600"
+              >
+                <FiUser />
+                Profile
+              </Link>
+            </>
+          )}
 
         </div>
 

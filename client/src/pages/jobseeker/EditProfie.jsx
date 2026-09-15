@@ -1,9 +1,18 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import api from "../../services/api";
+import api, { authStorage } from "../../services/api";
 
 const EditProfile = () => {
   const navigate = useNavigate();
+  const lastUser = authStorage.getUser();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      navigate("/login");
+    }
+  }, [navigate]);
 
   const [form, setForm] = useState({
     name: "",
@@ -24,12 +33,12 @@ const EditProfile = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await api.get("/profile");
+        const response = await api.get("/users/profile");
 
         const user = response.data;
 
         setForm({
-          name: user.name || "",
+          name: user.name || lastUser?.name || "",
           jobTitle: user.jobTitle || "",
           skills: user.skills?.join(", ") || "",
           experience: user.experience || "",
@@ -41,6 +50,20 @@ const EditProfile = () => {
         });
       } catch (error) {
         console.error(error);
+
+        if (lastUser) {
+          setForm({
+            name: lastUser.name || "",
+            jobTitle: "",
+            skills: "",
+            experience: "",
+            education: "",
+            resume: "",
+            bio: "",
+            phone: "",
+            location: "",
+          });
+        }
       } finally {
         setLoading(false);
       }
@@ -71,7 +94,7 @@ const EditProfile = () => {
           .filter(Boolean),
       };
 
-      await api.put("/profile", profileData);
+      await api.put("/users/profile", profileData);
 
       alert("Profile updated successfully!");
 

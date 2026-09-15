@@ -9,6 +9,7 @@ import Register from "./pages/Register";
 // Job Seeker
 import JobSeekerDashboard from "./pages/jobseeker/Dashboard";
 import Profile from "./pages/jobseeker/Profile";
+import EditProfile from "./pages/jobseeker/EditProfie";
 import Applications from "./pages/jobseeker/Applications";
 import Notifications from "./pages/jobseeker/Notification";
 import SavedJobs from "./pages/jobseeker/SavedJobs";
@@ -40,6 +41,7 @@ function App() {
         <Route path="/dashboard/jobseeker" element={<JobSeekerDashboard />} />
 
         <Route path="/dashboard/jobseeker/profile" element={<Profile />} />
+        <Route path="/dashboard/jobseeker/profile/edit" element={<EditProfile />} />
 
         <Route
           path="/dashboard/jobseeker/applications"

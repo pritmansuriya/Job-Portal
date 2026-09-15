@@ -1,18 +1,37 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import api from "../../services/api";
+import { Link, useNavigate } from "react-router-dom";
+import api, { authStorage } from "../../services/api";
 
 const Profile = () => {
-  const [profile, setProfile] = useState(null);
+  const navigate = useNavigate();
+  const lastUser = authStorage.getUser();
+  const [profile, setProfile] = useState(lastUser ? { ...lastUser } : null);
   const [loading, setLoading] = useState(true);
 
   const fetchProfile = async () => {
-    try {
-      const response = await api.get("/profile");
+    const token = localStorage.getItem("token");
 
+    if (!token) {
+      setLoading(false);
+      navigate("/login");
+      return;
+    }
+
+    try {
+      const response = await api.get("/users/profile");
       setProfile(response.data);
     } catch (error) {
       console.error("Profile error:", error);
+
+      if (error.response?.status === 401 || error.response?.status === 403) {
+        authStorage.clear();
+        navigate("/login");
+        return;
+      }
+
+      if (lastUser) {
+        setProfile({ ...lastUser });
+      }
     } finally {
       setLoading(false);
     }

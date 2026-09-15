@@ -6,11 +6,22 @@ const NotificationBell = () => {
   const [count, setCount] = useState(0);
 
   const fetchUnreadCount = async () => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      setCount(0);
+      return;
+    }
+
     try {
       const response = await notificationsApi.unreadCount();
-
-      setCount(response.data.count);
+      setCount(response.data.count || 0);
     } catch (error) {
+      if (error.response?.status === 401 || error.response?.status === 403) {
+        setCount(0);
+        return;
+      }
+
       console.error("Error fetching unread count:", error);
     }
   };
