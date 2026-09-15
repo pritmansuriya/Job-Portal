@@ -52,6 +52,7 @@ function App() {
         />
 
         <Route path="/dashboard/jobseeker/saved" element={<SavedJobs />} />
+        <Route path="/dashboard/jobseeker/profile" element={<Profile />} />
 
         {/* Employer */}
         <Route path="/dashboard/employer" element={<EmployerDashboard />} />

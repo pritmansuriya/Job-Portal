@@ -1,11 +1,11 @@
 @import "tailwindcss";
 
 :root {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: "Trebuchet MS", "Segoe UI", sans-serif;
   line-height: 1.5;
   font-weight: 400;
-  color: #111827;
-  background: #ffffff;
+  color: #132238;
+  background: #eaf4f2;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -20,7 +20,7 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  background: #fff;
+  background: #eaf4f2;
 }
 
 #root {
@@ -29,4 +29,9 @@ body {
 
 * {
   box-sizing: border-box;
+}
+
+::selection {
+  color: #132238;
+  background: #f6c453;
 }

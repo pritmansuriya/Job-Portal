@@ -12,6 +12,7 @@ const userRoutes = require("./routes/userRoutes");
 const notificationRoutes = require(
   "./routes/notificationRoutes"
 );
+const profileRoutes = require("./routes/profileRoutes");
 
 const {
   notFound,
@@ -69,6 +70,8 @@ app.use(
   "/api/notifications",
   notificationRoutes
 );
+
+app.use("/api/profile", profileRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
