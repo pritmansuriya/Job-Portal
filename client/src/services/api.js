@@ -29,8 +29,17 @@ api.interceptors.response.use(
     }
 );
 
-const getErrorMessage = (error, fallback) =>
-    error.response?.data?.message || error.message || fallback;
+const getErrorMessage = (error, fallback) => {
+    if (!error.response) {
+        if (error.code === "ERR_NETWORK" || error.message === "Network Error") {
+            return "Cannot connect to the server. Please start the backend server and try again.";
+        }
+
+        return error.message || fallback;
+    }
+
+    return error.response?.data?.message || error.message || fallback;
+};
 
 export const authApi = {
     login: (credentials) => api.post("/auth/login", credentials),
@@ -56,6 +65,9 @@ export const usersApi = {
     profile: () => api.get("/users/profile"),
     updateProfile: (profile) => api.put("/users/profile", profile),
     list: () => api.get("/users"),
+    savedJobs: () => api.get("/users/saved-jobs"),
+    saveJob: (jobId) => api.post(`/users/saved-jobs/${jobId}`),
+    removeSavedJob: (jobId) => api.delete(`/users/saved-jobs/${jobId}`),
 };
 
 export const notificationsApi = {

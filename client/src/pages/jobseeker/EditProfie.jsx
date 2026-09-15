@@ -16,12 +16,17 @@ const EditProfile = () => {
 
   const [form, setForm] = useState({
     name: "",
+    email: "",
     jobTitle: "",
     skills: "",
     experience: "",
     education: "",
     resume: "",
     bio: "",
+    projects: "",
+    certifications: "",
+    languages: "",
+    achievements: "",
     phone: "",
     location: "",
   });
@@ -39,12 +44,17 @@ const EditProfile = () => {
 
         setForm({
           name: user.name || lastUser?.name || "",
+          email: user.email || lastUser?.email || "",
           jobTitle: user.jobTitle || "",
           skills: user.skills?.join(", ") || "",
           experience: user.experience || "",
           education: user.education || "",
           resume: user.resume || "",
           bio: user.bio || "",
+          projects: user.projects || "",
+          certifications: user.certifications || "",
+          languages: user.languages || "",
+          achievements: user.achievements || "",
           phone: user.phone || "",
           location: user.location || "",
         });
@@ -54,12 +64,17 @@ const EditProfile = () => {
         if (lastUser) {
           setForm({
             name: lastUser.name || "",
+            email: lastUser.email || "",
             jobTitle: "",
             skills: "",
             experience: "",
             education: "",
             resume: "",
             bio: "",
+            projects: "",
+            certifications: "",
+            languages: "",
+            achievements: "",
             phone: "",
             location: "",
           });
@@ -77,6 +92,28 @@ const EditProfile = () => {
       ...form,
       [e.target.name]: e.target.value,
     });
+  };
+
+  const generateResume = () => {
+    const escapeHtml = (value) => String(value || "").replace(/[&<>'"]/g, (character) => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      "'": "&#39;",
+      '"': "&quot;",
+    })[character]);
+    const section = (title, content) => content ? `<section><h2>${title}</h2><p>${escapeHtml(content).replace(/\n/g, "<br />")}</p></section>` : "";
+    const resumeWindow = window.open("", "_blank", "noopener,noreferrer");
+
+    if (!resumeWindow) {
+      alert("Please allow pop-ups to generate your resume.");
+      return;
+    }
+
+    resumeWindow.document.write(`<!doctype html><html><head><title>${escapeHtml(form.name || "Resume")}</title><style>
+      body{font-family:Arial,sans-serif;color:#132238;max-width:800px;margin:0 auto;padding:48px;line-height:1.6}h1{font-size:34px;margin:0}h3{color:#0d9f9a;margin:4px 0 18px}h2{font-size:18px;border-bottom:2px solid #0d9f9a;padding-bottom:6px;margin-top:28px}p{white-space:normal;margin:8px 0;color:#45556b}.contact{color:#45556b;font-size:13px}@media print{body{padding:0}}
+    </style></head><body><h1>${escapeHtml(form.name || "Your Name")}</h1><h3>${escapeHtml(form.jobTitle || "Job Seeker")}</h3><p class="contact">${escapeHtml([form.email, form.location, form.phone].filter(Boolean).join(" | "))}</p>${section("About Me", form.bio)}${section("Education", form.education)}${section("Experience", form.experience)}${section("Skills", form.skills)}${section("Projects", form.projects)}${section("Certifications", form.certifications)}${section("Languages", form.languages)}${section("Achievements", form.achievements)}<script>window.onload=function(){window.print();}</script></body></html>`);
+    resumeWindow.document.close();
   };
 
   const handleSubmit = async (e) => {
@@ -146,6 +183,17 @@ const EditProfile = () => {
               onChange={handleChange}
               className="w-full border rounded-lg px-4 py-2 outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="John Doe"
+            />
+          </div>
+
+          <div>
+            <label className="block font-medium mb-2">Email</label>
+            <input
+              type="email"
+              name="email"
+              value={form.email}
+              readOnly
+              className="w-full cursor-not-allowed rounded-lg border bg-gray-100 px-4 py-2 text-gray-500 outline-none"
             />
           </div>
 
@@ -251,6 +299,27 @@ const EditProfile = () => {
 
           {/* Phone */}
           <div>
+            <label className="block font-medium mb-2">Projects</label>
+            <textarea name="projects" value={form.projects} onChange={handleChange} rows="4" className="w-full border rounded-lg px-4 py-2 outline-none focus:ring-2 focus:ring-blue-500" placeholder="Project name, role, and technologies used" />
+          </div>
+
+          <div>
+            <label className="block font-medium mb-2">Certifications</label>
+            <textarea name="certifications" value={form.certifications} onChange={handleChange} rows="3" className="w-full border rounded-lg px-4 py-2 outline-none focus:ring-2 focus:ring-blue-500" placeholder="Certification name and issuing organization" />
+          </div>
+
+          <div>
+            <label className="block font-medium mb-2">Languages</label>
+            <input type="text" name="languages" value={form.languages} onChange={handleChange} className="w-full border rounded-lg px-4 py-2 outline-none focus:ring-2 focus:ring-blue-500" placeholder="English, Hindi, Gujarati" />
+          </div>
+
+          <div>
+            <label className="block font-medium mb-2">Achievements</label>
+            <textarea name="achievements" value={form.achievements} onChange={handleChange} rows="3" className="w-full border rounded-lg px-4 py-2 outline-none focus:ring-2 focus:ring-blue-500" placeholder="Awards, recognitions, or notable achievements" />
+          </div>
+
+          {/* Phone */}
+          <div>
             <label className="block font-medium mb-2">
               Phone
             </label>
@@ -282,7 +351,7 @@ const EditProfile = () => {
           </div>
 
           {/* Buttons */}
-          <div className="flex gap-3 pt-4">
+          <div className="flex flex-wrap gap-3 pt-4">
 
             <button
               type="submit"
@@ -290,6 +359,14 @@ const EditProfile = () => {
               className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50"
             >
               {saving ? "Saving..." : "Save Profile"}
+            </button>
+
+            <button
+              type="button"
+              onClick={generateResume}
+              className="rounded-lg bg-[#0d9f9a] px-6 py-2 text-white hover:bg-[#087b78]"
+            >
+              Generate Resume
             </button>
 
             <button
