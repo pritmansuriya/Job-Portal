@@ -70,6 +70,13 @@ export const authStorage = {
         localStorage.setItem("token", session.token);
         localStorage.setItem("user", JSON.stringify(session.user));
     },
+    getUser: () => {
+        try {
+            return JSON.parse(localStorage.getItem("user") || "null");
+        } catch {
+            return null;
+        }
+    },
     clear: () => {
         localStorage.removeItem("token");
         localStorage.removeItem("user");

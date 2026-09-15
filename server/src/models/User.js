@@ -5,7 +5,7 @@ const userSchema = new mongoose.Schema(
     name: {
       type: String,
       required: true,
-      trim: true
+      trim: true,
     },
 
     email: {
@@ -13,37 +13,62 @@ const userSchema = new mongoose.Schema(
       required: true,
       unique: true,
       lowercase: true,
-      trim: true
     },
 
     password: {
       type: String,
-      required: true
+      required: true,
     },
 
     role: {
       type: String,
       enum: ["jobseeker", "employer", "admin"],
-      default: "jobseeker"
+      default: "jobseeker",
+    },
+
+    // Jobseeker Profile
+    jobTitle: {
+      type: String,
+      default: "",
+    },
+
+    skills: {
+      type: [String],
+      default: [],
+    },
+
+    experience: {
+      type: String,
+      default: "",
+    },
+
+    education: {
+      type: String,
+      default: "",
+    },
+
+    resume: {
+      type: String,
+      default: "",
+    },
+
+    bio: {
+      type: String,
+      default: "",
     },
 
     phone: {
       type: String,
-      default: ""
+      default: "",
     },
 
     location: {
       type: String,
-      default: ""
+      default: "",
     },
-
-    about: {
-      type: String,
-      default: ""
-    }
   },
   {
-    timestamps: true
+    timestamps: true,
   }
 );
 
