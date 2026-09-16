@@ -13,6 +13,8 @@ const notificationSchema = new mongoose.Schema(
       enum: [
         "new_job",
         "application_received",
+        "application_viewed",
+        "application_interview",
         "application_accepted",
         "application_rejected",
       ],

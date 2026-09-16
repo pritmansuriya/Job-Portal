@@ -46,22 +46,21 @@ const applyJob = async (req, res) => {
       });
 
 
-    // ========================================
-    // Notify Employer
-    // ========================================
-    await Notification.create({
-      recipient: job.createdBy,
-
-      type: "application_received",
-
-      title: "New Job Application",
-
-      message: `You received a new application for ${job.title}.`,
-
-      job: job._id,
-
-      application: application._id,
-    });
+    // Notification is optional for jobs created without an employer account.
+    if (job.createdBy) {
+      try {
+        await Notification.create({
+          recipient: job.createdBy,
+          type: "application_received",
+          title: "New Job Application",
+          message: `You received a new application for ${job.title}.`,
+          job: job._id,
+          application: application._id,
+        });
+      } catch (notificationError) {
+        console.error("Application created, but notification failed:", notificationError.message);
+      }
+    }
 
 
     res.status(201).json({
@@ -130,11 +129,31 @@ const getEmployerApplications =
           )
           .populate(
             "applicant",
-            "name email"
+            "name email jobTitle experience skills education resume bio location"
           )
           .sort({
             createdAt: -1,
           });
+
+      await Promise.all(
+        applications.map((application) =>
+          Notification.findOneAndUpdate(
+            {
+              recipient: application.applicant._id,
+              type: "application_viewed",
+              application: application._id,
+            },
+            {
+              $setOnInsert: {
+                title: "Application viewed",
+                message: `${application.job.company || "The employer"} viewed your application.`,
+                job: application.job._id,
+              },
+            },
+            { upsert: true, setDefaultsOnInsert: true }
+          )
+        )
+      );
 
       res.json(applications);
 
@@ -194,27 +213,33 @@ const updateApplicationStatus =
       // ========================================
       // Notify Jobseeker
       // ========================================
-      if (
-        status === "Selected" ||
-        status === "Rejected"
-      ) {
-        const isAccepted =
-          status === "accepted";
+      if (["Interview", "Selected", "Rejected"].includes(status)) {
+        const notificationType =
+          status === "Interview"
+            ? "application_interview"
+            : status === "Selected"
+              ? "application_accepted"
+              : "application_rejected";
+        const company = application.job.company || "the employer";
 
         await Notification.create({
           recipient: application.applicant,
 
-          type: isAccepted
-            ? "application_accepted"
-            : "application_rejected",
+          type: notificationType,
 
-          title: isAccepted
-            ? "Application Accepted"
-            : "Application Rejected",
+          title:
+            status === "Interview"
+              ? "Application moved to interview"
+              : status === "Selected"
+                ? "Application accepted"
+                : "Application rejected",
 
-          message: isAccepted
-            ? `Your application for ${application.job.title} has been selected.`
-            : `Your application for ${application.job.title} has been rejected.`,
+          message:
+            status === "Interview"
+              ? `Your application status changed to Interview at ${company}.`
+              : status === "Selected"
+                ? `Your application was accepted by ${company}.`
+                : `Your application for ${application.job.title} at ${company} was rejected.`,
 
           job: application.job._id,
 

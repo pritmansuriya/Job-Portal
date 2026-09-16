@@ -8,7 +8,11 @@ const connectDB = async () => {
       : ["1.1.1.1", "8.8.8.8"];
 
     dns.setServers(dnsServers);
-    const conn = await mongoose.connect(process.env.MONGO_URI);
+    const conn = await mongoose.connect(process.env.MONGO_URI, {
+      tls: true,
+      tlsAllowInvalidCertificates: true,
+      serverSelectionTimeoutMS: 10000,
+    });
 
     console.log("MongoDB connected successfully!");
     console.log(`Database Host: ${conn.connection.host}`);

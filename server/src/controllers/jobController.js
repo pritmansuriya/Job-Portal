@@ -12,9 +12,13 @@ const createJob = async (req, res) => {
       location,
       salary,
       jobType,
+      workMode,
       experience,
       skills,
-      deadline
+      deadline,
+      responsibilities,
+      requirements,
+      benefits
     } = req.body;
 
     const jobData = {
@@ -24,9 +28,13 @@ const createJob = async (req, res) => {
       location,
       salary,
       jobType,
+      workMode,
       experience,
       skills,
-      deadline
+      deadline,
+      responsibilities,
+      requirements,
+      benefits
     };
 
     if (req.user?._id) {

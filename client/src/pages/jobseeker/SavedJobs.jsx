@@ -1,5 +1,15 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import {
+  FiBell,
+  FiFileText,
+  FiHeart,
+  FiHome,
+  FiLogOut,
+  FiSearch,
+  FiSettings,
+  FiUser,
+} from "react-icons/fi";
 import { authStorage, getErrorMessage, usersApi } from "../../services/api";
 
 const SavedJobs = () => {
@@ -32,10 +42,10 @@ const SavedJobs = () => {
   };
 
   const navItems = [
-    ["Dashboard", "/dashboard/jobseeker", "🏠"], ["Find Jobs", "/dashboard/jobseeker#find-jobs", "🔍"],
-    ["Saved Jobs", "/dashboard/jobseeker/saved", "❤️"], ["My Applications", "/dashboard/jobseeker/applications", "📄"],
-    ["Notifications", "/dashboard/jobseeker/notifications", "🔔"], ["My Profile", "/dashboard/jobseeker/profile", "👤"],
-    ["My Resume", "/dashboard/jobseeker/profile/edit", "📄"], ["Settings", "/dashboard/jobseeker/profile/edit", "⚙️"],
+    ["Dashboard", "/dashboard/jobseeker", FiHome], ["Find Jobs", "/dashboard/jobseeker/jobs", FiSearch],
+    ["Saved Jobs", "/dashboard/jobseeker/saved", FiHeart], ["My Applications", "/dashboard/jobseeker/applications", FiFileText],
+    ["Notifications", "/dashboard/jobseeker/notifications", FiBell], ["My Profile", "/dashboard/jobseeker/profile", FiUser],
+    ["My Resume", "/dashboard/jobseeker/profile/edit", FiFileText], ["Settings", "/dashboard/jobseeker/profile/edit", FiSettings],
   ];
 
   return (

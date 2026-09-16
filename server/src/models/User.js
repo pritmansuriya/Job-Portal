@@ -57,6 +57,46 @@ const userSchema = new mongoose.Schema(
       default: "",
     },
 
+    projects: {
+      type: String,
+      default: "",
+    },
+
+    certifications: {
+      type: String,
+      default: "",
+    },
+
+    languages: {
+      type: String,
+      default: "",
+    },
+
+    achievements: {
+      type: String,
+      default: "",
+    },
+
+    projects: {
+      type: String,
+      default: "",
+    },
+
+    certifications: {
+      type: String,
+      default: "",
+    },
+
+    languages: {
+      type: String,
+      default: "",
+    },
+
+    achievements: {
+      type: String,
+      default: "",
+    },
+
     phone: {
       type: String,
       default: "",
@@ -66,6 +106,22 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    // Employer / Company Profile
+    companyName: { type: String, default: "" },
+    companyWebsite: { type: String, default: "" },
+    companyIndustry: { type: String, default: "" },
+    companySize: { type: String, default: "" },
+    companyFounded: { type: String, default: "" },
+    companyDescription: { type: String, default: "" },
+    companySocial: {
+      linkedin: { type: String, default: "" },
+      twitter: { type: String, default: "" },
+    },
+
+    savedJobs: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Job",
+    }],
   },
   {
     timestamps: true,

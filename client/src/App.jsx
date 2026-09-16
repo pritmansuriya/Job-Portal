@@ -22,6 +22,9 @@ import EmployerDashboard from "./pages/employer/Dashboard";
 import PostJob from "./pages/employer/PostJob";
 import MyJobs from "./pages/employer/MyJobs";
 import EmployerApplications from "./pages/employer/Applications";
+import EmployerInterviews from "./pages/employer/Interviews";
+import EmployerNotifications from "./pages/employer/Notifications";
+import CompanyProfile from "./pages/employer/CompanyProfile";
 
 // Admin
 import AdminDashboard from "./pages/admin/Dashboard";
@@ -45,6 +48,7 @@ function App() {
 
         {/* Job Seeker */}
         <Route path="/dashboard/jobseeker" element={<JobSeekerDashboard />} />
+        <Route path="/dashboard/jobseeker/jobs" element={<JobSeekerDashboard />} />
 
         <Route path="/dashboard/jobseeker/profile" element={<Profile />} />
         <Route path="/dashboard/jobseeker/profile/edit" element={<EditProfile />} />
@@ -60,7 +64,6 @@ function App() {
         />
 
         <Route path="/dashboard/jobseeker/saved" element={<SavedJobs />} />
-        <Route path="/dashboard/jobseeker/profile" element={<Profile />} />
 
         {/* Employer */}
         <Route path="/dashboard/employer" element={<EmployerDashboard />} />
@@ -72,6 +75,21 @@ function App() {
         <Route
           path="/dashboard/employer/applications"
           element={<EmployerApplications />}
+        />
+
+        <Route
+          path="/dashboard/employer/interviews"
+          element={<EmployerInterviews />}
+        />
+
+        <Route
+          path="/dashboard/employer/notifications"
+          element={<EmployerNotifications />}
+        />
+
+        <Route
+          path="/dashboard/employer/profile"
+          element={<CompanyProfile />}
         />
 
         {/* Admin */}

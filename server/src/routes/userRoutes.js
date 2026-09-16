@@ -9,7 +9,10 @@ const allowRoles = require("../middleware/roleMiddleware");
 const {
   getProfile,
   updateProfile,
-  getUsers
+  getUsers,
+  getSavedJobs,
+  saveJob,
+  removeSavedJob
 } = require("../controllers/userController");
 
 const router = express.Router();
@@ -32,5 +35,9 @@ router.get(
   allowRoles("admin"),
   getUsers
 );
+
+router.get("/saved-jobs", protect, allowRoles("jobseeker"), getSavedJobs);
+router.post("/saved-jobs/:jobId", protect, allowRoles("jobseeker"), saveJob);
+router.delete("/saved-jobs/:jobId", protect, allowRoles("jobseeker"), removeSavedJob);
 
 module.exports = router;

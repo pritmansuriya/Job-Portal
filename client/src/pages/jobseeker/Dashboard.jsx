@@ -1,13 +1,35 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import {
+  FiBell,
+  FiBriefcase,
+  FiDollarSign,
+  FiFileText,
+  FiHeart,
+  FiHome,
+  FiLogOut,
+  FiMapPin,
+  FiMic,
+  FiSearch,
+  FiSettings,
+  FiUser,
+} from "react-icons/fi";
+import { FaHandPaper } from "react-icons/fa";
 import JobCard from "../../components/Jobcard";
 import { authStorage, getErrorMessage, jobsApi } from "../../services/api";
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const currentUser = authStorage.getUser();
   const isLoggedIn = Boolean(localStorage.getItem("token"));
-  const [activeSection, setActiveSection] = useState("dashboard");
+
+  const isJobsSection =
+    location.pathname === "/dashboard/jobseeker/jobs" ||
+    location.hash === "#find-jobs" ||
+    new URLSearchParams(location.search).get("section") === "jobs";
+
+  const [activeSection, setActiveSection] = useState(isJobsSection ? "jobs" : "dashboard");
   const [jobFilters, setJobFilters] = useState({
     keyword: "",
     location: "",
@@ -23,22 +45,34 @@ const Dashboard = () => {
   const [isLoadingJobs, setIsLoadingJobs] = useState(false);
   const [jobsError, setJobsError] = useState("");
 
+  useEffect(() => {
+    if (
+      location.pathname === "/dashboard/jobseeker/jobs" ||
+      location.hash === "#find-jobs" ||
+      new URLSearchParams(location.search).get("section") === "jobs"
+    ) {
+      setActiveSection("jobs");
+    } else if (location.pathname === "/dashboard/jobseeker" && !location.hash) {
+      setActiveSection("dashboard");
+    }
+  }, [location]);
+
   const stats = [
-    { label: "Applications", value: "12", icon: "📄" },
-    { label: "Interviews", value: "3", icon: "🎤" },
-    { label: "Saved Jobs", value: "8", icon: "💼" },
-    { label: "Profile", value: "80%", icon: "👤" },
+    { label: "Applications", value: "12", Icon: FiFileText },
+    { label: "Interviews", value: "3", Icon: FiMic },
+    { label: "Saved Jobs", value: "8", Icon: FiBriefcase },
+    { label: "Profile", value: "80%", Icon: FiUser },
   ];
 
   const navItems = [
-    { label: "Dashboard", path: "/dashboard/jobseeker", icon: "🏠" },
-    { label: "Find Jobs", path: "#find-jobs", icon: "🔍" },
-    { label: "Saved Jobs", path: "/dashboard/jobseeker/saved", icon: "❤️" },
-    { label: "My Applications", path: "/dashboard/jobseeker/applications", icon: "📄" },
-    { label: "Notifications", path: "/dashboard/jobseeker/notifications", icon: "🔔" },
-    { label: "My Profile", path: "/dashboard/jobseeker/profile", icon: "👤" },
-    { label: "My Resume", path: "/dashboard/jobseeker/profile/edit", icon: "📄" },
-    { label: "Settings", path: "/dashboard/jobseeker/profile/edit", icon: "⚙️" },
+    { label: "Dashboard", path: "/dashboard/jobseeker", Icon: FiHome },
+    { label: "Find Jobs", path: "/dashboard/jobseeker/jobs", Icon: FiSearch },
+    { label: "Saved Jobs", path: "/dashboard/jobseeker/saved", Icon: FiHeart },
+    { label: "My Applications", path: "/dashboard/jobseeker/applications", Icon: FiFileText },
+    { label: "Notifications", path: "/dashboard/jobseeker/notifications", Icon: FiBell },
+    { label: "My Profile", path: "/dashboard/jobseeker/profile", Icon: FiUser },
+    { label: "My Resume", path: "/dashboard/jobseeker/profile/edit", Icon: FiFileText },
+    { label: "Settings", path: "/dashboard/jobseeker/profile/edit", Icon: FiSettings },
   ];
 
   const handleLogout = () => {
@@ -61,7 +95,9 @@ const Dashboard = () => {
   };
 
   const handleApplyFilters = async (event) => {
-    event.preventDefault();
+    if (event) {
+      event.preventDefault();
+    }
     setIsLoadingJobs(true);
     setJobsError("");
     setHasAppliedFilters(true);
@@ -102,6 +138,12 @@ const Dashboard = () => {
     }
   };
 
+  useEffect(() => {
+    if (activeSection === "jobs" && !hasAppliedFilters) {
+      handleApplyFilters();
+    }
+  }, [activeSection, hasAppliedFilters]);
+
   if (!isLoggedIn) {
     return (
       <div className="min-h-screen bg-gray-50 p-6">
@@ -131,33 +173,39 @@ const Dashboard = () => {
           </div>
 
           <nav className="space-y-2">
-            {navItems.map(({ label, path, icon }) => (
-              <Link
-                key={label}
-                to={path}
-                onClick={(event) => {
-                  if (label === "Find Jobs") {
-                    event.preventDefault();
-                    setActiveSection("jobs");
-                  }
-                  if (label === "Dashboard") {
-                    event.preventDefault();
-                    setActiveSection("dashboard");
-                  }
-                }}
-                className="flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium text-slate-200 transition-all hover:bg-white/10 hover:text-white"
-              >
-                <span className="text-lg">{icon}</span>
-                <span>{label}</span>
-              </Link>
-            ))}
+            {navItems.map(({ label, path, Icon }) => {
+              const isActive =
+                (label === "Dashboard" && activeSection === "dashboard") ||
+                (label === "Find Jobs" && activeSection === "jobs");
+
+              return (
+                <Link
+                  key={label}
+                  to={path}
+                  onClick={() => {
+                    if (label === "Find Jobs") {
+                      setActiveSection("jobs");
+                    }
+                    if (label === "Dashboard") {
+                      setActiveSection("dashboard");
+                    }
+                  }}
+                  className={`flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium transition-all hover:bg-white/10 hover:text-white ${
+                    isActive ? "bg-white/10 text-white font-semibold" : "text-slate-200"
+                  }`}
+                >
+                  <Icon className="shrink-0 text-lg" />
+                  <span>{label}</span>
+                </Link>
+              );
+            })}
 
             <button
               type="button"
               onClick={handleLogout}
               className="mt-6 flex w-full items-center gap-3 rounded-2xl bg-red-500 px-4 py-3 text-left text-sm font-semibold text-white transition hover:bg-red-600"
             >
-              <span>🚪</span>
+              <FiLogOut className="shrink-0 text-lg" />
               <span>Logout</span>
             </button>
           </nav>
@@ -238,17 +286,17 @@ const Dashboard = () => {
           <div className="mb-8 rounded-[2rem] bg-white p-6 shadow-[0_15px_35px_rgba(19,34,56,0.08)] ring-1 ring-slate-200">
             <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
               <div>
-                <p className="text-3xl font-bold text-[#132238]">Good Morning, {currentUser?.name?.split(" ")[0] || "John"} 👋</p>
+                <p className="flex items-center gap-2 text-3xl font-bold text-[#132238]">Good Morning, {currentUser?.name?.split(" ")[0] || "John"} <FaHandPaper className="text-[#e07a45]" /></p>
                 <h1 className="mt-2 text-4xl font-black tracking-tight text-[#132238]">Find your next opportunity.</h1>
               </div>
             </div>
           </div>
 
           <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-            {stats.map(({ label, value, icon }) => (
+            {stats.map(({ label, value, Icon }) => (
               <div key={label} className="rounded-[1.6rem] border border-slate-200 bg-white p-5 shadow-[0_12px_25px_rgba(19,34,56,0.05)]">
                 <div className="flex items-center justify-between">
-                  <span className="text-2xl">{icon}</span>
+                  <Icon className="text-2xl text-[#0d9f9a]" />
                   <span className="rounded-full bg-[#e8f9f8] px-2 py-1 text-xs font-semibold text-[#0d9f9a]">Live</span>
                 </div>
                 <p className="mt-4 text-sm font-medium text-slate-500">{label}</p>
@@ -260,7 +308,16 @@ const Dashboard = () => {
           <div className="mt-8 rounded-[2rem] bg-white p-6 shadow-[0_12px_25px_rgba(19,34,56,0.05)] ring-1 ring-slate-200">
             <div className="mb-5 flex items-center justify-between">
               <h2 className="text-2xl font-black text-[#132238]">Recommended Jobs</h2>
-              <a href="#find-jobs" className="text-sm font-semibold text-[#0d9f9a]">Search again</a>
+              <button
+                type="button"
+                onClick={() => {
+                  setActiveSection("jobs");
+                  navigate("/dashboard/jobseeker/jobs");
+                }}
+                className="text-sm font-semibold text-[#0d9f9a] hover:underline"
+              >
+                Search again
+              </button>
             </div>
 
             <div className="rounded-[1.5rem] border border-slate-200 bg-[#f9fbfd] p-5">
@@ -270,14 +327,14 @@ const Dashboard = () => {
                   <p className="mt-2 text-sm font-medium text-slate-500">ABC Technologies</p>
                 </div>
 
-                <button type="button" className="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-600">
-                  ♡
+                <button type="button" aria-label="Save job" className="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-600">
+                  <FiHeart />
                 </button>
               </div>
 
               <div className="mt-5 flex flex-wrap items-center gap-5 text-sm text-slate-600">
-                <span>📍 Ahmedabad</span>
-                <span>💰 ₹5 - ₹8 LPA</span>
+                <span className="inline-flex items-center gap-1.5"><FiMapPin className="text-[#0d9f9a]" /> Ahmedabad</span>
+                <span className="inline-flex items-center gap-1.5"><FiDollarSign className="text-[#0d9f9a]" /> ₹5 - ₹8 LPA</span>
               </div>
 
               <div className="mt-6 flex items-center justify-between gap-3 border-t border-slate-200 pt-4">

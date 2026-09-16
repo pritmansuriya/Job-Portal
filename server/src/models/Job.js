@@ -40,6 +40,12 @@ const jobSchema = new mongoose.Schema(
       default: "Full Time"
     },
 
+    workMode: {
+      type: String,
+      enum: ["On-site", "Hybrid", "Remote"],
+      default: "On-site"
+    },
+
     experience: {
       type: String,
       default: "Fresher"
@@ -48,6 +54,21 @@ const jobSchema = new mongoose.Schema(
     skills: {
       type: [String],
       default: []
+    },
+
+    responsibilities: {
+      type: String,
+      default: ""
+    },
+
+    requirements: {
+      type: String,
+      default: ""
+    },
+
+    benefits: {
+      type: String,
+      default: ""
     },
 
     deadline: {

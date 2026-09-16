@@ -34,8 +34,20 @@ const updateMyProfile = async (req, res) => {
       education,
       resume,
       bio,
+      projects,
+      certifications,
+      languages,
+      achievements,
       phone,
       location,
+      // Company fields
+      companyName,
+      companyWebsite,
+      companyIndustry,
+      companySize,
+      companyFounded,
+      companyDescription,
+      companySocial,
     } = req.body;
 
     const user = await User.findById(req.user._id);
@@ -53,8 +65,25 @@ const updateMyProfile = async (req, res) => {
     user.education = education ?? user.education;
     user.resume = resume ?? user.resume;
     user.bio = bio ?? user.bio;
+    user.projects = projects ?? user.projects;
+    user.certifications = certifications ?? user.certifications;
+    user.languages = languages ?? user.languages;
+    user.achievements = achievements ?? user.achievements;
     user.phone = phone ?? user.phone;
     user.location = location ?? user.location;
+    // Company fields
+    user.companyName = companyName ?? user.companyName;
+    user.companyWebsite = companyWebsite ?? user.companyWebsite;
+    user.companyIndustry = companyIndustry ?? user.companyIndustry;
+    user.companySize = companySize ?? user.companySize;
+    user.companyFounded = companyFounded ?? user.companyFounded;
+    user.companyDescription = companyDescription ?? user.companyDescription;
+    if (companySocial) {
+      user.companySocial = {
+        linkedin: companySocial.linkedin ?? user.companySocial?.linkedin ?? "",
+        twitter: companySocial.twitter ?? user.companySocial?.twitter ?? "",
+      };
+    }
 
     await user.save();
 

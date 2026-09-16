@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { FiBell } from "react-icons/fi";
 import { notificationsApi } from "../services/api";
 
 const NotificationBell = () => {
@@ -42,9 +43,7 @@ const NotificationBell = () => {
       to="/dashboard/jobseeker/notifications"
       className="relative inline-flex"
     >
-      <span className="text-2xl">
-        🔔
-      </span>
+      <FiBell className="text-2xl" />
 
       {count > 0 && (
         <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full min-w-5 h-5 flex items-center justify-center px-1">

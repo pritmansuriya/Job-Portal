@@ -1,5 +1,17 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import {
+  FiBell,
+  FiCheck,
+  FiCircle,
+  FiFileText,
+  FiHeart,
+  FiHome,
+  FiLogOut,
+  FiSearch,
+  FiSettings,
+  FiUser,
+} from "react-icons/fi";
 import { applicationsApi, authStorage, getErrorMessage } from "../../services/api";
 
 const statusStyles = {
@@ -37,14 +49,14 @@ const Applications = () => {
   };
 
   const navItems = [
-    ["Dashboard", "/dashboard/jobseeker", "🏠"],
-    ["Find Jobs", "/dashboard/jobseeker#find-jobs", "🔍"],
-    ["Saved Jobs", "/dashboard/jobseeker/saved", "❤️"],
-    ["My Applications", "/dashboard/jobseeker/applications", "📄"],
-    ["Notifications", "/dashboard/jobseeker/notifications", "🔔"],
-    ["My Profile", "/dashboard/jobseeker/profile", "👤"],
-    ["My Resume", "/dashboard/jobseeker/profile/edit", "📄"],
-    ["Settings", "/dashboard/jobseeker/profile/edit", "⚙️"],
+    ["Dashboard", "/dashboard/jobseeker", FiHome],
+    ["Find Jobs", "/dashboard/jobseeker/jobs", FiSearch],
+    ["Saved Jobs", "/dashboard/jobseeker/saved", FiHeart],
+    ["My Applications", "/dashboard/jobseeker/applications", FiFileText],
+    ["Notifications", "/dashboard/jobseeker/notifications", FiBell],
+    ["My Profile", "/dashboard/jobseeker/profile", FiUser],
+    ["My Resume", "/dashboard/jobseeker/profile/edit", FiFileText],
+    ["Settings", "/dashboard/jobseeker/profile/edit", FiSettings],
   ];
 
   return (
@@ -57,8 +69,8 @@ const Applications = () => {
           </div>
           <div className="mb-6 rounded-2xl border border-white/10 bg-white/5 p-4"><p className="text-xs uppercase tracking-[0.2em] text-slate-300">Profile</p><p className="mt-2 text-sm text-slate-100">{currentUser?.email || "No email available"}</p></div>
           <nav className="space-y-2">
-            {navItems.map(([label, path, icon]) => <Link key={label} to={path} className={`flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium transition-all hover:bg-white/10 hover:text-white ${label === "My Applications" ? "bg-white/10 text-white" : "text-slate-200"}`}><span className="text-lg">{icon}</span><span>{label}</span></Link>)}
-            <button type="button" onClick={handleLogout} className="mt-6 flex w-full items-center gap-3 rounded-2xl bg-red-500 px-4 py-3 text-left text-sm font-semibold text-white transition hover:bg-red-600"><span>🚪</span><span>Logout</span></button>
+            {navItems.map(([label, path, Icon]) => <Link key={label} to={path} className={`flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium transition-all hover:bg-white/10 hover:text-white ${label === "My Applications" ? "bg-white/10 text-white" : "text-slate-200"}`}><Icon className="shrink-0 text-lg" /><span>{label}</span></Link>)}
+            <button type="button" onClick={handleLogout} className="mt-6 flex w-full items-center gap-3 rounded-2xl bg-red-500 px-4 py-3 text-left text-sm font-semibold text-white transition hover:bg-red-600"><FiLogOut className="shrink-0 text-lg" /><span>Logout</span></button>
           </nav>
         </aside>
 
@@ -108,7 +120,7 @@ const Applications = () => {
 
 const StatusBadge = ({ status }) => (
   <span className={`inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-bold ${statusStyles[status] || "bg-slate-100 text-slate-700"}`}>
-    <span>{status === "Selected" ? "🟢" : status === "Rejected" ? "🔴" : "🟡"}</span>
+    <FiCircle className={`fill-current ${status === "Selected" ? "text-emerald-500" : status === "Rejected" ? "text-red-500" : "text-amber-500"}`} />
     {status === "Selected" ? "Accepted" : status === "Rejected" ? "Reject" : status}
   </span>
 );
@@ -129,7 +141,7 @@ const ApplicationDetails = ({ application }) => {
       <div className="mt-7"><p className="text-sm font-bold text-[#132238]">Status</p><div className="mt-5 space-y-4">
         {steps.map((step, index) => {
           const isComplete = index < currentStep;
-          return <div key={step} className="flex items-center gap-3 text-sm"><span className={`flex h-7 w-7 items-center justify-center rounded-full text-xs font-black ${isComplete ? "bg-[#0d9f9a] text-white" : "bg-slate-100 text-slate-400"}`}>{isComplete ? "✓" : index + 1}</span><span className={isComplete ? "font-bold text-[#132238]" : "text-slate-400"}>{step}</span></div>;
+          return <div key={step} className="flex items-center gap-3 text-sm"><span className={`flex h-7 w-7 items-center justify-center rounded-full text-xs font-black ${isComplete ? "bg-[#0d9f9a] text-white" : "bg-slate-100 text-slate-400"}`}>{isComplete ? <FiCheck /> : index + 1}</span><span className={isComplete ? "font-bold text-[#132238]" : "text-slate-400"}>{step}</span></div>;
         })}
       </div>{application.status === "Rejected" && <p className="mt-4 rounded-xl bg-red-50 p-3 text-sm font-semibold text-red-600">This application was rejected.</p>}</div>
 

@@ -7,6 +7,14 @@ const Navbar = () => {
   const navigate = useNavigate();
   const isLoggedIn = Boolean(localStorage.getItem("token"));
 
+  const currentUser = authStorage.getUser();
+  const dashboardPath =
+    currentUser?.role === "employer"
+      ? "/dashboard/employer"
+      : currentUser?.role === "admin"
+      ? "/dashboard/admin"
+      : "/dashboard/jobseeker/profile";
+
   const handleLogout = () => {
     authStorage.clear();
     navigate("/login");
@@ -51,32 +59,33 @@ const Navbar = () => {
             Contact
           </Link>
 
-          {/* Login */}
-          <Link to="/login" className="rounded-full px-4 py-2 text-sm font-bold text-slate-600 transition-colors hover:bg-white hover:text-[#0d9f9a]">
-            Login
-          </Link>
-
-          {/* Register */}
-          <Link
-            to="/register"
-            className="ml-2 flex items-center gap-2 rounded-full bg-[#0d9f9a] px-5 py-2.5 text-sm font-black text-white shadow-[3px_3px_0_#132238] transition-all hover:-translate-y-0.5 hover:bg-[#087b78] hover:shadow-[5px_5px_0_#132238]"
-          >
-            Register
-            <FiArrowUpRight />
-          </Link>
+          {!isLoggedIn && (
+            <>
+              <Link to="/login" className="rounded-full px-4 py-2 text-sm font-bold text-slate-600 transition-colors hover:bg-white hover:text-[#0d9f9a]">
+                Login
+              </Link>
+              <Link
+                to="/register"
+                className="ml-2 flex items-center gap-2 rounded-full bg-[#0d9f9a] px-5 py-2.5 text-sm font-black text-white shadow-[3px_3px_0_#132238] transition-all hover:-translate-y-0.5 hover:bg-[#087b78] hover:shadow-[5px_5px_0_#132238]"
+              >
+                Register
+                <FiArrowUpRight />
+              </Link>
+            </>
+          )}
 
           {isLoggedIn && (
             <>
               {/* Notifications */}
               <NotificationBell />
 
-              {/* Profile */}
+              {/* Profile / Dashboard */}
               <Link
-                to="/dashboard/jobseeker/profile"
-                className="flex items-center gap-2 hover:text-blue-600"
+                to={dashboardPath}
+                className="flex items-center gap-2 font-bold text-slate-700 hover:text-[#0d9f9a]"
               >
                 <FiUser />
-                Profile
+                {currentUser?.role === "employer" ? "Dashboard" : currentUser?.role === "admin" ? "Admin" : "Profile"}
               </Link>
 
               <button
