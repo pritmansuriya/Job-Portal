@@ -30,6 +30,13 @@ const register = async (req, res) => {
       });
     }
 
+    // Employer & Admin registration is restricted
+    if (role === "employer" || role === "admin") {
+      return res.status(403).json({
+        message: "Employer registration is disabled. Please log in with your designated employer credentials.",
+      });
+    }
+
     // Check existing user
     console.log("Checking existing user...");
 
@@ -60,7 +67,7 @@ const register = async (req, res) => {
       name,
       email,
       password: hashedPassword,
-      role: role || "jobseeker",
+      role: "jobseeker",
     });
 
     console.log("User created:", user._id);

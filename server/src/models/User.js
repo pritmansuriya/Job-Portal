@@ -118,6 +118,15 @@ const userSchema = new mongoose.Schema(
       twitter: { type: String, default: "" },
     },
 
+    settings: {
+      emailAlerts: { type: Boolean, default: true },
+      candidateStatusAlerts: { type: Boolean, default: true },
+      weeklyDigest: { type: Boolean, default: false },
+      defaultJobType: { type: String, default: "Full Time" },
+      defaultWorkMode: { type: String, default: "Hybrid" },
+      autoNotifyShortlist: { type: Boolean, default: true },
+    },
+
     savedJobs: [{
       type: mongoose.Schema.Types.ObjectId,
       ref: "Job",

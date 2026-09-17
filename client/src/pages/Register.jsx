@@ -7,6 +7,7 @@ const Register = () => {
 
   const [form, setForm] = useState({
     name: "",
+
     email: "",
     password: "",
     confirmPassword: "",
@@ -61,32 +62,24 @@ const Register = () => {
               Start your journey with the right opportunities and connect with the right employers.
             </p>
 
-            <div className="mt-8 grid gap-4">
-              <button
-                type="button"
-                onClick={() => setForm({ ...form, role: "jobseeker" })}
-                className={`rounded-2xl border p-4 text-left transition ${
-                  form.role === "jobseeker"
-                    ? "border-[#69d4cf] bg-[#1b3151]"
-                    : "border-white/10 bg-white/5"
-                }`}
-              >
-                <div className="text-sm font-black uppercase tracking-[0.18em] text-[#69d4cf]">Job Seeker</div>
-                <div className="mt-2 text-lg font-semibold">I’m looking for a job</div>
-              </button>
+            <div className="mt-8 space-y-4">
+              <div className="rounded-2xl border border-[#69d4cf] bg-[#1b3151] p-4 text-left">
+                <div className="text-sm font-black uppercase tracking-[0.18em] text-[#69d4cf]">Job Seeker Registration</div>
+                <div className="mt-1 text-sm text-slate-300">Create an account to explore and apply to open jobs.</div>
+              </div>
 
-              <button
-                type="button"
-                onClick={() => setForm({ ...form, role: "employer" })}
-                className={`rounded-2xl border p-4 text-left transition ${
-                  form.role === "employer"
-                    ? "border-[#f6c453] bg-[#2a1e0d]"
-                    : "border-white/10 bg-white/5"
-                }`}
-              >
-                <div className="text-sm font-black uppercase tracking-[0.18em] text-[#f6c453]">Employer</div>
-                <div className="mt-2 text-lg font-semibold">I’m hiring employees</div>
-              </button>
+              <div className="rounded-2xl border border-white/10 bg-white/5 p-4 text-left">
+                <div className="text-xs font-black uppercase tracking-[0.18em] text-[#f6c453]">Employer Access</div>
+                <p className="mt-1 text-xs text-slate-300">
+                  Employer registration is restricted. Pre-authorized employers must log in with their designated credentials.
+                </p>
+                <Link
+                  to="/login"
+                  className="mt-3 inline-flex items-center text-xs font-black text-[#f6c453] hover:underline"
+                >
+                  Go to Employer Login &rarr;
+                </Link>
+              </div>
             </div>
           </div>
 

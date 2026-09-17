@@ -16,6 +16,9 @@ const connectDB = async () => {
 
     console.log("MongoDB connected successfully!");
     console.log(`Database Host: ${conn.connection.host}`);
+
+    const seedEmployer = require("../utils/seedEmployer");
+    await seedEmployer();
   } catch (error) {
     console.error("MongoDB connection failed!");
     console.error(error.message);

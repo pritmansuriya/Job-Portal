@@ -1,6 +1,7 @@
 const Application = require("../models/Applications");
 const Job = require("../models/Job");
 const Notification = require("../models/notification");
+const User = require("../models/User");
 
 
 // ========================================
@@ -46,11 +47,19 @@ const applyJob = async (req, res) => {
       });
 
 
-    // Notification is optional for jobs created without an employer account.
-    if (job.createdBy) {
+    // Notification for employer
+    let employerId = job.createdBy;
+    if (!employerId) {
+      const employer = await User.findOne({ role: "employer" });
+      if (employer) {
+        employerId = employer._id;
+      }
+    }
+
+    if (employerId) {
       try {
         await Notification.create({
-          recipient: job.createdBy,
+          recipient: employerId,
           type: "application_received",
           title: "New Job Application",
           message: `You received a new application for ${job.title}.`,
@@ -110,7 +119,11 @@ const getEmployerApplications =
   async (req, res) => {
     try {
       const jobs = await Job.find({
-        createdBy: req.user._id,
+        $or: [
+          { createdBy: req.user._id },
+          { createdBy: null },
+          { createdBy: { $exists: false } }
+        ]
       }).select("_id");
 
       const jobIds = jobs.map(
@@ -125,11 +138,11 @@ const getEmployerApplications =
         })
           .populate(
             "job",
-            "title company"
+            "title company location salary jobType workMode"
           )
           .populate(
             "applicant",
-            "name email jobTitle experience skills education resume bio location"
+            "name email phone jobTitle experience skills education resume bio location"
           )
           .sort({
             createdAt: -1,

@@ -64,6 +64,7 @@ export const applicationsApi = {
 export const usersApi = {
     profile: () => api.get("/users/profile"),
     updateProfile: (profile) => api.put("/users/profile", profile),
+    changePassword: (passwords) => api.put("/users/change-password", passwords),
     list: () => api.get("/users"),
     savedJobs: () => api.get("/users/saved-jobs"),
     saveJob: (jobId) => api.post(`/users/saved-jobs/${jobId}`),

@@ -39,6 +39,11 @@ const createJob = async (req, res) => {
 
     if (req.user?._id) {
       jobData.createdBy = req.user._id;
+    } else {
+      const employer = await User.findOne({ role: "employer" });
+      if (employer) {
+        jobData.createdBy = employer._id;
+      }
     }
 
     const job = await Job.create(jobData);

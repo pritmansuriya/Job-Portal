@@ -9,6 +9,7 @@ const allowRoles = require("../middleware/roleMiddleware");
 const {
   getProfile,
   updateProfile,
+  changePassword,
   getUsers,
   getSavedJobs,
   saveJob,
@@ -27,6 +28,12 @@ router.put(
   "/profile",
   protect,
   updateProfile
+);
+
+router.put(
+  "/change-password",
+  protect,
+  changePassword
 );
 
 router.get(
