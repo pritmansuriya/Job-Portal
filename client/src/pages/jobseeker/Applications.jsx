@@ -56,13 +56,13 @@ const Applications = () => {
     ["Notifications", "/dashboard/jobseeker/notifications", FiBell],
     ["My Profile", "/dashboard/jobseeker/profile", FiUser],
     ["My Resume", "/dashboard/jobseeker/profile/edit", FiFileText],
-    ["Settings", "/dashboard/jobseeker/profile/edit", FiSettings],
+    ["Settings", "/dashboard/jobseeker/settings", FiSettings],
   ];
 
   return (
-    <div className="min-h-screen bg-[#eaf4f2] text-[#132238]">
-      <div className="mx-auto flex min-h-screen max-w-[1600px]">
-        <aside className="hidden w-[290px] shrink-0 bg-[#132238] px-6 py-8 text-white shadow-[10px_0_30px_rgba(19,34,56,0.15)] md:block">
+    <div className="h-screen overflow-hidden bg-[#eaf4f2] text-[#132238]">
+      <div className="mx-auto flex h-screen max-w-[1600px] overflow-hidden">
+        <aside className="hidden w-[290px] shrink-0 overflow-y-auto bg-[#132238] px-6 py-8 text-white shadow-[10px_0_30px_rgba(19,34,56,0.15)] md:block">
           <div className="mb-10 flex items-center gap-3">
             <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#0d9f9a] text-xl font-black shadow-[4px_4px_0_#f6c453]">{currentUser?.name?.charAt(0)?.toUpperCase() || "J"}</div>
             <div><p className="text-xs font-black uppercase tracking-[0.2em] text-[#69d4cf]">Job Seeker</p><h2 className="mt-1 text-xl font-bold">{currentUser?.name || "User"}</h2></div>
@@ -74,7 +74,7 @@ const Applications = () => {
           </nav>
         </aside>
 
-        <main className="min-w-0 flex-1 px-6 py-10 md:px-10">
+        <main className="min-w-0 flex-1 overflow-y-auto px-6 py-10 md:px-10">
           <div className="mx-auto max-w-7xl">
         <div className="mb-8">
           <p className="text-sm font-black uppercase tracking-[0.22em] text-[#0d9f9a]">Job seeker portal</p>

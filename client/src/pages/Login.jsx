@@ -1,7 +1,15 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { authApi, authStorage, getErrorMessage } from "../services/api";
-import { FiAlertCircle, FiBriefcase, FiCheck, FiKey, FiLock, FiMail, FiUser } from "react-icons/fi";
+import {
+  FiAlertCircle,
+  FiBriefcase,
+  FiCheck,
+  FiKey,
+  FiLock,
+  FiMail,
+  FiUser,
+} from "react-icons/fi";
 
 const DEFAULT_EMPLOYER_EMAIL = "employer@gmail.com";
 const DEFAULT_EMPLOYER_PASSWORD = "Employer@123";
@@ -60,7 +68,9 @@ const Login = () => {
   return (
     <div className="flex min-h-screen items-center justify-center bg-[#132238] px-6 py-12">
       <div className="w-full max-w-md rounded-[2rem] border border-white/10 bg-white p-8 shadow-[12px_12px_0_#f6c453] md:p-10">
-        <p className="text-center text-xs font-black uppercase tracking-[0.3em] text-[#0d9f9a]">Welcome back</p>
+        <p className="text-center text-xs font-black uppercase tracking-[0.3em] text-[#0d9f9a]">
+          Welcome back
+        </p>
         <h1 className="mt-3 text-center text-4xl font-black tracking-tight text-[#132238]">
           Login
         </h1>
@@ -105,7 +115,8 @@ const Login = () => {
               <span>Default Employer Credentials Pre-set:</span>
             </div>
             <div className="mt-1 font-mono text-[11px] text-slate-700">
-              Email: <strong>{DEFAULT_EMPLOYER_EMAIL}</strong><br />
+              Email: <strong>{DEFAULT_EMPLOYER_EMAIL}</strong>
+              <br />
               Password: <strong>{DEFAULT_EMPLOYER_PASSWORD}</strong>
             </div>
           </div>
@@ -167,7 +178,11 @@ const Login = () => {
                 : "bg-[#0d9f9a] hover:bg-[#087b78]"
             }`}
           >
-            {isSubmitting ? "Signing in..." : activeRoleTab === "employer" ? "Login as Employer" : "Login"}
+            {isSubmitting
+              ? "Signing in..."
+              : activeRoleTab === "employer"
+                ? "Login as Employer"
+                : "Login"}
           </button>
         </form>
 
@@ -175,12 +190,17 @@ const Login = () => {
           {activeRoleTab === "jobseeker" ? (
             <>
               Don't have an account?{" "}
-              <Link to="/register" className="font-black text-[#0d9f9a] hover:text-[#087b78]">
+              <Link
+                to="/register"
+                className="font-black text-[#0d9f9a] hover:text-[#087b78]"
+              >
                 Register as Job Seeker
               </Link>
             </>
           ) : (
-            <span>Employer accounts are restricted to pre-authorized access.</span>
+            <span>
+              Employer accounts are restricted to pre-authorized access.
+            </span>
           )}
         </p>
       </div>
