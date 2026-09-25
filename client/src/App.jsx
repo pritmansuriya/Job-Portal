@@ -16,7 +16,6 @@ import EditProfile from "./pages/jobseeker/EditProfie";
 import Applications from "./pages/jobseeker/Applications";
 import Notifications from "./pages/jobseeker/Notification";
 import SavedJobs from "./pages/jobseeker/SavedJobs";
-import JobSeekerSettings from "./pages/jobseeker/Settings";
 
 // Employer
 import EmployerDashboard from "./pages/employer/Dashboard";
@@ -32,6 +31,7 @@ import AdminDashboard from "./pages/admin/Dashboard";
 import Users from "./pages/admin/Users";
 import AdminJobs from "./pages/admin/Jobs";
 import AdminApplications from "./pages/admin/Applications";
+import JobSeekerSettings from "./pages/jobseeker/Settings";
 
 function App() {
   return (
@@ -53,8 +53,6 @@ function App() {
 
         <Route path="/dashboard/jobseeker/profile" element={<Profile />} />
         <Route path="/dashboard/jobseeker/profile/edit" element={<EditProfile />} />
-
-        <Route path = "/dashboard/jobseeker/settings" element={<JobSeekerSettings />} />
 
         <Route
           path="/dashboard/jobseeker/applications"
