@@ -4,3 +4,4 @@
   "installCommand": "cd client && npm install",
   "framework": "vite"
 }
+
