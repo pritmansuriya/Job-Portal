@@ -55,9 +55,9 @@ const SavedJobs = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-[#eaf4f2] text-[#132238]">
-      <div className="mx-auto flex min-h-screen max-w-[1600px]">
-        <aside className="hidden w-[290px] shrink-0 bg-[#132238] px-6 py-8 text-white shadow-[10px_0_30px_rgba(19,34,56,0.15)] md:block">
+    <div className="min-h-screen w-full bg-[#eaf4f2] text-[#132238]">
+      <div className="flex min-h-screen w-full">
+        <aside className="hidden w-64 shrink-0 bg-[#132238] px-5 py-8 text-white shadow-lg md:block">
           <div className="mb-10 flex items-center gap-3">
             <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#0d9f9a] text-xl font-black shadow-[4px_4px_0_#f6c453]">
               {currentUser?.name?.charAt(0)?.toUpperCase() || "J"}
@@ -100,8 +100,8 @@ const SavedJobs = () => {
             </button>
           </nav>
         </aside>
-        <main className="min-w-0 flex-1 px-6 py-10 md:px-10">
-          <div className="mx-auto max-w-7xl">
+        <main className="min-w-0 flex-1 px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
+          <div className="w-full">
             <p className="text-sm font-black uppercase tracking-[0.22em] text-[#0d9f9a]">
               Job seeker portal
             </p>

@@ -1,12 +1,12 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
-const Companies = () => {
+const Companies = ({ showLayout = true }) => {
   return (
     <>
-      <Navbar />
-      <main className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
-        <h1 className="text-4xl font-black tracking-tight text-[#132238]">Top Companies</h1>
+      {showLayout && <Navbar />}
+      <section id="companies" className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
+        <h2 className="text-4xl font-black tracking-tight text-[#132238]">Top Companies</h2>
         <p className="mt-4 max-w-2xl text-slate-600">
           Explore companies hiring across technology, design, marketing, finance, and operations.
         </p>
@@ -24,13 +24,13 @@ const Companies = () => {
               <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#0d9f9a] font-black text-white">
                 {company.charAt(0)}
               </div>
-              <h2 className="mt-5 text-xl font-bold text-[#132238]">{company}</h2>
+              <h3 className="mt-5 text-xl font-bold text-[#132238]">{company}</h3>
               <p className="mt-2 text-slate-500">Hiring across product, engineering, operations, and design roles.</p>
             </div>
           ))}
         </div>
-      </main>
-      <Footer />
+      </section>
+      {showLayout && <Footer />}
     </>
   );
 };

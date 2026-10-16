@@ -5,10 +5,10 @@ import Footer from "../components/Footer";
 import JobCard from "../components/Jobcard";
 import { getErrorMessage, jobsApi } from "../services/api";
 
-const Jobs = () => {
+const Jobs = ({ showLayout = true, initialKeyword = "", initialLoc = "" }) => {
   const [searchParams] = useSearchParams();
-  const initialSearch = searchParams.get("search") || "";
-  const initialLocation = searchParams.get("location") || "";
+  const initialSearch = initialKeyword || searchParams.get("search") || "";
+  const initialLocation = initialLoc || searchParams.get("location") || "";
   const [filters, setFilters] = useState({
     keyword: initialSearch,
     location: initialLocation,
@@ -127,9 +127,9 @@ const Jobs = () => {
 
   return (
     <>
-      <Navbar />
+      {showLayout && <Navbar />}
 
-      <main className="relative isolate min-h-screen overflow-hidden bg-[#eaf4f2]">
+      <section id="jobs" className="relative isolate min-h-screen overflow-hidden bg-[#eaf4f2]">
         <div className="pointer-events-none absolute inset-0 -z-10 opacity-60 [background-image:linear-gradient(rgba(19,34,56,.045)_1px,transparent_1px),linear-gradient(90deg,rgba(19,34,56,.045)_1px,transparent_1px)] [background-size:42px_42px]" />
         <div className="pointer-events-none absolute -left-32 top-40 -z-10 h-80 w-80 rounded-full bg-[#69d4cf]/20 blur-3xl" />
         <div className="pointer-events-none absolute -right-32 bottom-20 -z-10 h-96 w-96 rounded-full bg-[#f6c453]/20 blur-3xl" />
@@ -178,7 +178,7 @@ const Jobs = () => {
               <FilterGroup title="Work Mode" options={filterOptions.workModes} selected={filters.workModes} onToggle={(value) => toggleFilter("workModes", value)} />
               <FilterGroup title="Skills" options={filterOptions.skills} selected={filters.skills} onToggle={(value) => toggleFilter("skills", value)} />
 
-              <button type="submit" className="mt-7 w-full rounded-xl bg-[#132238] px-5 py-3 font-black text-white transition hover:bg-[#0d9f9a]">Apply Filters</button>
+              <button type="submit" className="mt-7 w-full rounded-xl bg-[#132238] px-5 py-3 font-black cursor-pointer text-white transition hover:bg-[#0d9f9a]">Apply Filters</button>
             </aside>
 
             <div className="grid content-start gap-5 md:grid-cols-2">
@@ -194,9 +194,9 @@ const Jobs = () => {
           </form>
 
         </div>
-      </main>
+      </section>
 
-      <Footer />
+      {showLayout && <Footer />}
     </>
   );
 };

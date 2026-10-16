@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
+// Public Pages
 import Home from "./pages/Home";
 import Jobs from "./pages/Jobs";
 import JobDetails from "./pages/JobDetails";
@@ -16,6 +17,7 @@ import EditProfile from "./pages/jobseeker/EditProfie";
 import Applications from "./pages/jobseeker/Applications";
 import Notifications from "./pages/jobseeker/Notification";
 import SavedJobs from "./pages/jobseeker/SavedJobs";
+import JobSeekerSettings from "./pages/jobseeker/Settings";
 
 // Employer
 import EmployerDashboard from "./pages/employer/Dashboard";
@@ -25,81 +27,90 @@ import EmployerApplications from "./pages/employer/Applications";
 import EmployerInterviews from "./pages/employer/Interviews";
 import EmployerNotifications from "./pages/employer/Notifications";
 import CompanyProfile from "./pages/employer/CompanyProfile";
+import EmployerSettings from "./pages/employer/Settings";
 
 // Admin
 import AdminDashboard from "./pages/admin/Dashboard";
 import Users from "./pages/admin/Users";
 import AdminJobs from "./pages/admin/Jobs";
 import AdminApplications from "./pages/admin/Applications";
-import JobSeekerSettings from "./pages/jobseeker/Settings";
+
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Public */}
+        {/* Public Pages */}
         <Route path="/" element={<Home />} />
         <Route path="/jobs" element={<Jobs />} />
         <Route path="/jobs/:id" element={<JobDetails />} />
         <Route path="/companies" element={<Companies />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
+
+        {/* Authentication Pages */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
-        {/* Job Seeker */}
+        {/* Job Seeker Dashboard */}
         <Route path="/dashboard/jobseeker" element={<JobSeekerDashboard />} />
-        <Route path="/dashboard/jobseeker/jobs" element={<JobSeekerDashboard />} />
-
+        <Route
+          path="/dashboard/jobseeker/jobs"
+          element={<JobSeekerDashboard />}
+        />
         <Route path="/dashboard/jobseeker/profile" element={<Profile />} />
-        <Route path="/dashboard/jobseeker/profile/edit" element={<EditProfile />} />
-
+        <Route
+          path="/dashboard/jobseeker/profile/edit"
+          element={<EditProfile />}
+        />
         <Route
           path="/dashboard/jobseeker/applications"
           element={<Applications />}
         />
-
         <Route
           path="/dashboard/jobseeker/notifications"
           element={<Notifications />}
         />
-
         <Route path="/dashboard/jobseeker/saved" element={<SavedJobs />} />
-
-        {/* Employer */}
-        <Route path="/dashboard/employer" element={<EmployerDashboard />} />
-
-        <Route path="/dashboard/employer/post-job" element={<PostJob />} />
-
-        <Route path="/dashboard/employer/jobs" element={<MyJobs />} />
-
         <Route
-          path="/dashboard/employer/applications"
-          element={<EmployerApplications />}
+          path="/dashboard/jobseeker/settings"
+          element={<JobSeekerSettings />}
         />
 
+        {/* Employer Dashboard (Protected) */}
         <Route
-          path="/dashboard/employer/interviews"
-          element={<EmployerInterviews />}
-        />
+          element={<ProtectedRoute allowedRoles={["employer", "admin"]} />}
+        >
+          <Route path="/dashboard/employer" element={<EmployerDashboard />} />
+          <Route path="/dashboard/employer/post-job" element={<PostJob />} />
+          <Route path="/dashboard/employer/jobs" element={<MyJobs />} />
+          <Route
+            path="/dashboard/employer/applications"
+            element={<EmployerApplications />}
+          />
+          <Route
+            path="/dashboard/employer/interviews"
+            element={<EmployerInterviews />}
+          />
+          <Route
+            path="/dashboard/employer/notifications"
+            element={<EmployerNotifications />}
+          />
+          <Route
+            path="/dashboard/employer/profile"
+            element={<CompanyProfile />}
+          />
+          <Route
+            path="/dashboard/employer/settings"
+            element={<EmployerSettings />}
+          />
+        </Route>
 
-        <Route
-          path="/dashboard/employer/notifications"
-          element={<EmployerNotifications />}
-        />
-
-        <Route
-          path="/dashboard/employer/profile"
-          element={<CompanyProfile />}
-        />
-
-        {/* Admin */}
+        {/* Admin Dashboard */}
         <Route path="/dashboard/admin" element={<AdminDashboard />} />
-
         <Route path="/dashboard/admin/users" element={<Users />} />
-
         <Route path="/dashboard/admin/jobs" element={<AdminJobs />} />
-
         <Route
           path="/dashboard/admin/applications"
           element={<AdminApplications />}

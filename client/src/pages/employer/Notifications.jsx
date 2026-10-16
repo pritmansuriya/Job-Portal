@@ -141,10 +141,10 @@ const EmployerNotifications = () => {
   };
 
   return (
-    <div className="h-screen overflow-hidden bg-[#f3f5f2] text-[#17212b]">
-      <div className="mx-auto flex h-screen max-w-[1680px] overflow-hidden">
+    <div className="h-screen w-full overflow-hidden bg-[#f3f5f2] text-[#17212b]">
+      <div className="flex h-screen w-full overflow-hidden">
         {/* ── Sidebar ── */}
-        <aside className="hidden w-68.5 shrink-0 flex-col overflow-y-auto bg-[#17212b] px-5 py-7 text-white lg:flex">
+        <aside className="hidden w-72 shrink-0 flex-col overflow-y-auto bg-[#17212b] px-5 py-7 text-white lg:flex">
           <Link
             to="/dashboard/employer"
             className="mb-12 flex items-center gap-3 px-3"
@@ -204,8 +204,8 @@ const EmployerNotifications = () => {
         </aside>
 
         {/* ── Main ── */}
-        <main className="min-w-0 flex-1 overflow-y-auto px-5 py-7 sm:px-8 lg:px-11 lg:py-9">
-          <div className="mx-auto max-w-4xl">
+        <main className="min-w-0 flex-1 overflow-y-auto px-6 py-7 sm:px-10 lg:px-12 lg:py-9">
+          <div className="w-full">
 
             {/* Header */}
             <header className="flex flex-col gap-4 border-b border-slate-200 pb-7 md:flex-row md:items-end md:justify-between">

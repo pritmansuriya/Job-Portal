@@ -84,7 +84,7 @@ const Login = () => {
           <button
             type="button"
             onClick={() => handleRoleTabChange("jobseeker")}
-            className={`flex flex-1 items-center justify-center gap-2 rounded-xl py-2.5 text-xs font-black transition ${
+            className={`flex flex-1 items-center cursor-pointer justify-center gap-2 rounded-xl py-2.5 text-xs font-black transition ${
               activeRoleTab === "jobseeker"
                 ? "bg-white text-[#132238] shadow-sm"
                 : "text-slate-500 hover:text-[#132238]"
@@ -96,7 +96,7 @@ const Login = () => {
           <button
             type="button"
             onClick={() => handleRoleTabChange("employer")}
-            className={`flex flex-1 items-center justify-center gap-2 rounded-xl py-2.5 text-xs font-black transition ${
+            className={`flex flex-1 items-center cursor-pointer justify-center gap-2 rounded-xl py-2.5 text-xs font-black transition ${
               activeRoleTab === "employer"
                 ? "bg-[#17212b] text-[#c5f36c] shadow-sm"
                 : "text-slate-500 hover:text-[#132238]"
@@ -172,7 +172,7 @@ const Login = () => {
           <button
             type="submit"
             disabled={isSubmitting}
-            className={`w-full rounded-2xl py-3.5 font-black text-white shadow-[4px_4px_0_#132238] transition-all hover:-translate-y-0.5 hover:shadow-[6px_6px_0_#132238] disabled:cursor-not-allowed disabled:opacity-60 ${
+            className={`w-full rounded-2xl cursor-pointer py-3.5 font-black text-white shadow-[4px_4px_0_#132238] transition-all hover:-translate-y-0.5 hover:shadow-[6px_6px_0_#132238] disabled:cursor-not-allowed disabled:opacity-60 ${
               activeRoleTab === "employer"
                 ? "bg-[#17212b] text-[#c5f36c] hover:bg-[#2d3b47]"
                 : "bg-[#0d9f9a] hover:bg-[#087b78]"

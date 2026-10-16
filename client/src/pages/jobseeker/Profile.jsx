@@ -107,9 +107,9 @@ const Profile = () => {
   };
 
   return (
-    <div className="h-screen overflow-hidden bg-[#eaf4f2] text-[#132238]">
-      <div className="mx-auto flex h-screen max-w-[1600px] overflow-hidden">
-        <aside className="hidden w-[290px] shrink-0 overflow-y-auto bg-[#132238] px-6 py-8 text-white shadow-[10px_0_30px_rgba(19,34,56,0.15)] md:block">
+    <div className="h-screen w-full overflow-hidden bg-[#eaf4f2] text-[#132238]">
+      <div className="flex h-screen w-full overflow-hidden">
+        <aside className="hidden w-72 shrink-0 overflow-y-auto bg-[#132238] px-6 py-8 text-white shadow-[10px_0_30px_rgba(19,34,56,0.15)] md:block">
           <div className="mb-10 flex items-center gap-3">
             <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#0d9f9a] text-xl font-black shadow-[4px_4px_0_#f6c453]">
               {profile.name?.charAt(0)?.toUpperCase() || "J"}
@@ -152,8 +152,8 @@ const Profile = () => {
             </button>
           </nav>
         </aside>
-        <main className="min-w-0 flex-1 overflow-y-auto px-6 py-10 md:px-10">
-          <div className="mx-auto max-w-5xl">
+        <main className="min-w-0 flex-1 overflow-y-auto px-6 py-7 sm:px-10 lg:px-12 lg:py-9">
+          <div className="w-full">
             <div className="mb-8 flex items-end justify-between gap-4">
               <div>
                 <p className="text-sm font-black uppercase tracking-[0.22em] text-[#0d9f9a]">

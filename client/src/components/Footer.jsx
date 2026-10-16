@@ -12,24 +12,24 @@ const Footer = () => {
           </p>
         </div>
 
-        <div>
+        <div className="cursor-pointer">
           <h3 className="mb-4 text-xs font-black uppercase tracking-[0.2em] text-[#69d4cf]">For Job Seekers</h3>
           <p className="mb-2 text-slate-400 transition-colors hover:text-white">Find Jobs</p>
           <p className="mb-2 text-slate-400 transition-colors hover:text-white">Applications</p>
           <p className="text-slate-400 transition-colors hover:text-white">Saved Jobs</p>
         </div>
 
-        <div>
+        <div className="cursor-pointer">
           <h3 className="mb-4 text-xs font-black uppercase tracking-[0.2em] text-[#69d4cf]">For Employers</h3>
-          <p className="mb-2 text-slate-400">Post Jobs</p>
-          <p className="mb-2 text-slate-400">Find Candidates</p>
-          <p className="text-slate-400">Manage Jobs</p>
+          <p className="mb-2 text-slate-400 hover:text-white">Post Jobs</p>
+          <p className="mb-2 text-slate-400 hover:text-white">Find Candidates</p>
+          <p className="text-slate-400 hover:text-white">Manage Jobs</p>
         </div>
 
-        <div>
+        <div className="cursor-pointer">
           <h3 className="mb-4 text-xs font-black uppercase tracking-[0.2em] text-[#69d4cf]">Contact</h3>
-          <p className="text-slate-400">support@jobportal.com</p>
-          <p className="mt-2 text-slate-400">+91 98765 43210</p>
+          <p className="text-slate-400 hover:text-white">support@jobportal.com</p>
+          <p className="mt-2 text-slate-400 hover:text-white">+91 98765 43210</p>
         </div>
 
       </div>

@@ -142,7 +142,7 @@ const Register = () => {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full rounded-2xl bg-[#0d9f9a] py-3.5 font-black text-white shadow-[4px_4px_0_#132238] transition-all hover:-translate-y-0.5 hover:bg-[#087b78] hover:shadow-[6px_6px_0_#132238] disabled:cursor-not-allowed disabled:opacity-70"
+                className="w-full rounded-2xl cursor-pointer bg-[#0d9f9a] py-3.5 font-black text-white shadow-[4px_4px_0_#132238] transition-all hover:-translate-y-0.5 hover:bg-[#087b78] hover:shadow-[6px_6px_0_#132238] disabled:cursor-not-allowed disabled:opacity-70"
               >
                 {isSubmitting ? "Creating account..." : "Create Account"}
               </button>
