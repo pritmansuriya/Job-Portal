@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
- "scripts": {
-  "start": "node --openssl-legacy-provider src/server.js",
-  "dev": "nodemon --exec \"node --openssl-legacy-provider\" src/server.js",
-  "test": "echo \"Error: no test specified\" && exit 1"
-},
+  "scripts": {
+    "start": "node --openssl-legacy-provider src/server.js",
+    "dev": "nodemon --exec \"node --openssl-legacy-provider\" src/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -18,7 +18,8 @@
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3",
-    "mongoose": "^9.9.5"
+    "mongoose": "^9.9.5",
+    "openai": "^7.42.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.14"

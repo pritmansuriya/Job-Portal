@@ -1,30 +1,31 @@
 const express = require("express");
 const dotenv = require("dotenv");
-dotenv.config();
 const cors = require("cors");
+
+dotenv.config();
 
 const connectDB = require("./config/db");
 
+// Import routes
 const authRoutes = require("./routes/authRoutes");
 const jobRoutes = require("./routes/jobRoutes");
 const applicationRoutes = require("./routes/applicationRoutes");
 const userRoutes = require("./routes/userRoutes");
-const notificationRoutes = require(
-  "./routes/notificationRoutes"
-);
+const notificationRoutes = require("./routes/notificationRoutes");
 const profileRoutes = require("./routes/profileRoutes");
 
+// Import error middleware
 const {
   notFound,
   errorHandler
 } = require("./middleware/errorMiddleware");
 
-dotenv.config();
-
-connectDB();
-
 const app = express();
 
+// Connect to MongoDB
+connectDB();
+
+// CORS configuration
 app.use(
   cors({
     origin: [
@@ -35,52 +36,37 @@ app.use(
   })
 );
 
+// Parse incoming request bodies BEFORE routes
 app.use(express.json());
-app.use(express.urlencoded({
-  extended: true
-}));
 
+app.use(
+  express.urlencoded({
+    extended: true
+  })
+);
+
+// Root route
 app.get("/", (req, res) => {
   res.json({
     message: "Job Portal API is running"
   });
 });
 
-app.use(
-  "/api/auth",
-  authRoutes
-);
-
-app.use(
-  "/api/jobs",
-  jobRoutes
-);
-
-app.use(
-  "/api/applications",
-  applicationRoutes
-);
-
-app.use(
-  "/api/users",
-  userRoutes
-);
-
-app.use(
-  "/api/notifications",
-  notificationRoutes
-);
-
+// API routes
+app.use("/api/auth", authRoutes);
+app.use("/api/jobs", jobRoutes);
+app.use("/api/applications", applicationRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/notifications", notificationRoutes);
 app.use("/api/profile", profileRoutes);
 
+// Error handling (keep these last)
 app.use(notFound);
 app.use(errorHandler);
 
-const PORT =
-  process.env.PORT || 5000;
+// Start server
+const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-  console.log(
-    `Server running on http://localhost:${PORT}`
-  );
+  console.log(`Server running on http://localhost:${PORT}`);
 });

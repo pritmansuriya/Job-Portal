@@ -1,29 +1,41 @@
+
 const mongoose = require("mongoose");
-const dns = require("dns");
+
+let cached = global.mongoose;
+
+if (!cached) {
+  cached = global.mongoose = {
+    conn: null,
+    promise: null,
+  };
+}
 
 const connectDB = async () => {
-  try {
-    const dnsServers = process.env.DNS_SERVERS
-      ? process.env.DNS_SERVERS.split(",").map((server) => server.trim())
-      : ["1.1.1.1", "8.8.8.8"];
-
-    dns.setServers(dnsServers);
-    const conn = await mongoose.connect(process.env.MONGO_URI, {
-      tls: true,
-      tlsAllowInvalidCertificates: true,
-      serverSelectionTimeoutMS: 10000,
-    });
-
-    console.log("MongoDB connected successfully!");
-    console.log(`Database Host: ${conn.connection.host}`);
-
-    const seedEmployer = require("../utils/seedEmployer");
-    await seedEmployer();
-  } catch (error) {
-    console.error("MongoDB connection failed!");
-    console.error(error.message);
-    process.exit(1);
+  if (cached.conn && mongoose.connection.readyState === 1) {
+    return cached.conn;
   }
+
+  if (!process.env.MONGO_URI) {
+    throw new Error("MONGO_URI environment variable is missing");
+  }
+
+  if (!cached.promise) {
+    cached.promise = mongoose
+      .connect(process.env.MONGO_URI, {
+        serverSelectionTimeoutMS: 10000,
+      })
+      .then((mongooseInstance) => {
+        console.log("MongoDB connected successfully!");
+        return mongooseInstance;
+      })
+      .catch((error) => {
+        cached.promise = null;
+        throw error;
+      });
+  }
+
+  cached.conn = await cached.promise;
+  return cached.conn;
 };
 
 module.exports = connectDB;
