@@ -13,7 +13,7 @@ import Register from "./pages/Register";
 // Job Seeker
 import JobSeekerDashboard from "./pages/jobseeker/Dashboard";
 import Profile from "./pages/jobseeker/Profile";
-import EditProfile from "./pages/jobseeker/EditProfie";
+import MyResume from "./pages/jobseeker/MyResume";
 import Applications from "./pages/jobseeker/Applications";
 import Notifications from "./pages/jobseeker/Notification";
 import SavedJobs from "./pages/jobseeker/SavedJobs";
@@ -62,12 +62,20 @@ function App() {
         <Route path="/dashboard/jobseeker/profile" element={<Profile />} />
         <Route
           path="/dashboard/jobseeker/profile/edit"
-          element={<EditProfile />}
+          element={<MyResume />}
         />
+        <Route
+          path="/dashboard/jobseeker/resume"
+          element={<MyResume />}
+        />
+        <Route path="/jobseeker/resume" element={<MyResume />} />
+
         <Route
           path="/dashboard/jobseeker/applications"
           element={<Applications />}
         />
+        
+
         <Route
           path="/dashboard/jobseeker/notifications"
           element={<Notifications />}
