@@ -5,6 +5,8 @@ import {
   FiAlertCircle,
   FiBriefcase,
   FiCheck,
+  FiEye,
+  FiEyeOff,
   FiKey,
   FiLock,
   FiMail,
@@ -25,6 +27,7 @@ const Login = () => {
   const [error, setError] = useState(location.state?.message || "");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [activeRoleTab, setActiveRoleTab] = useState("jobseeker"); // 'jobseeker' | 'employer'
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleRoleTabChange = (role) => {
     setActiveRoleTab(role);
@@ -154,18 +157,27 @@ const Login = () => {
             <label className="mb-1.5 block text-xs font-black uppercase tracking-wide text-slate-500">
               Password
             </label>
-            <div className="relative">
+          <div className="relative">
               <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
                 <FiLock />
               </span>
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 placeholder="Enter password"
                 value={form.password}
                 onChange={(e) => setForm({ ...form, password: e.target.value })}
                 required
-                className="w-full rounded-2xl border border-slate-200 bg-slate-50 py-3.5 pl-11 pr-4 text-sm font-semibold outline-none transition focus:border-[#0d9f9a] focus:bg-white focus:ring-4 focus:ring-[#0d9f9a]/20"
+                className="w-full rounded-2xl border border-slate-200 bg-slate-50 py-3.5 pl-11 pr-12 text-sm font-semibold outline-none transition focus:border-[#0d9f9a] focus:bg-white focus:ring-4 focus:ring-[#0d9f9a]/20"
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword((prev) => !prev)}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-[#0d9f9a] transition"
+                tabIndex={-1}
+                aria-label={showPassword ? "Hide password" : "Show password"}
+              >
+                {showPassword ? <FiEyeOff className="text-base" /> : <FiEye className="text-base" />}
+              </button>
             </div>
           </div>
 

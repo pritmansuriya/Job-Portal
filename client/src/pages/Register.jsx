@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { authApi, getErrorMessage } from "../services/api";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -15,6 +16,8 @@ const Register = () => {
   });
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
 
   const handleChange = (e) => {
     setForm({...form, [e.target.name]: e.target.value });
@@ -115,28 +118,50 @@ const Register = () => {
 
               <div>
                 <label className="mb-2 block text-sm font-semibold text-slate-700">Password</label>
-                <input
-                  type="password"
-                  name="password"
-                  placeholder="Password"
-                  value={form.password}
-                  onChange={handleChange}
-                  className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3.5 outline-none transition focus:border-[#69d4cf] focus:bg-white focus:ring-4 focus:ring-[#69d4cf]/20"
-                  required
-                />
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    placeholder="Password"
+                    value={form.password}
+                    onChange={handleChange}
+                    className="w-full rounded-2xl border border-slate-200 bg-slate-50 py-3.5 pl-4 pr-12 outline-none transition focus:border-[#69d4cf] focus:bg-white focus:ring-4 focus:ring-[#69d4cf]/20"
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword((p) => !p)}
+                    tabIndex={-1}
+                    aria-label={showPassword ? "Hide password" : "Show password"}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-[#0d9f9a] transition"
+                  >
+                    {showPassword ? <FiEyeOff className="text-base" /> : <FiEye className="text-base" />}
+                  </button>
+                </div>
               </div>
 
               <div>
                 <label className="mb-2 block text-sm font-semibold text-slate-700">Confirm Password</label>
-                <input
-                  type="password"
-                  name="confirmPassword"
-                  placeholder="Confirm Password"
-                  value={form.confirmPassword}
-                  onChange={handleChange}
-                  className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3.5 outline-none transition focus:border-[#69d4cf] focus:bg-white focus:ring-4 focus:ring-[#69d4cf]/20"
-                  required
-                />
+                <div className="relative">
+                  <input
+                    type={showConfirm ? "text" : "password"}
+                    name="confirmPassword"
+                    placeholder="Confirm Password"
+                    value={form.confirmPassword}
+                    onChange={handleChange}
+                    className="w-full rounded-2xl border border-slate-200 bg-slate-50 py-3.5 pl-4 pr-12 outline-none transition focus:border-[#69d4cf] focus:bg-white focus:ring-4 focus:ring-[#69d4cf]/20"
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirm((p) => !p)}
+                    tabIndex={-1}
+                    aria-label={showConfirm ? "Hide password" : "Show password"}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-[#0d9f9a] transition"
+                  >
+                    {showConfirm ? <FiEyeOff className="text-base" /> : <FiEye className="text-base" />}
+                  </button>
+                </div>
               </div>
 
               <button

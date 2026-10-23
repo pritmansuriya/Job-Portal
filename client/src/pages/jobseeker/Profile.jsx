@@ -163,6 +163,7 @@ const Profile = () => {
                   My Profile
                 </h1>
               </div>
+              
               <Link
                 to="/dashboard/jobseeker/profile/edit"
                 className="rounded-xl bg-[#132238] px-5 py-3 text-sm font-bold text-white transition hover:bg-[#0d9f9a]"

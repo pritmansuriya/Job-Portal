@@ -50,7 +50,7 @@ export const jobsApi = {
     list: (params = {}) => api.get("/jobs", { params }),
     getById: (id) => api.get(`/jobs/${id}`),
     create: (job) => api.post("/jobs", job),
-    update: (id, job) => api.put(`/jobs/${id}`, job),
+    update: (id, job) => api.put(`/jobs/${id}`, job),   
     remove: (id) => api.delete(`/jobs/${id}`),
 };
 
